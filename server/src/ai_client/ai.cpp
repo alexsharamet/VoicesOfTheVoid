@@ -1,7 +1,11 @@
 #include "ai_client/ai.h"
 
+#include <nlohmann/json.hpp>
+
 #include <cassert>
 #include <iostream>
+
+using json = nlohmann::json;
 
 namespace {
     size_t writeFunc(const char *ptr, size_t size, size_t nMemb, void *userData) {
@@ -12,6 +16,34 @@ namespace {
             s += ptr[i];
         }
         return len;
+    }
+
+    std::pair<std::string, int> extractJson(const std::string_view &data, int pos) {
+        const int begin = static_cast<int>(data.find('{', pos));
+        int count = 1;
+        int i = begin + 1;
+
+        while (i < data.length()) {
+            if (data[i] == '{') {
+                ++count;
+            }
+            if (data[i] == '}') {
+                --count;
+            }
+
+            if (count == 0) {
+                ++i;
+                return {std::string(data.substr(begin, i - begin)), i};
+            }
+
+            if (count < 0) {
+                throw std::runtime_error("invalid response format");
+            }
+
+            ++i;
+        }
+
+        return {std::string{}, i};
     }
 }// namespace
 
@@ -70,6 +102,20 @@ namespace AI {
         m_port = port;
     }
 
+    std::string AI::parse() const {
+        std::string res;
+        int i = 0;
+        std::string data;
+        while (i < m_buffer.length()) {
+            std::tie(data, i) = extractJson(m_buffer, i);
+            if (!data.empty()) {
+                json val = json::parse(data);
+                res += val["token"];
+            }
+        }
+        return res;
+    }
+
     std::string AI::sendPromtSync(std::string_view promt) {
         const auto url = getURL();
         curl_easy_setopt(m_curl, CURLOPT_URL, url.c_str());
@@ -79,6 +125,7 @@ namespace AI {
         if (m_res != CURLE_OK) {
             std::cerr << curl_easy_strerror(m_res);
         }
-        return m_buffer;
+
+        return parse();
     }
 }// namespace AI

@@ -9,7 +9,9 @@ class AI_SERVER(ConanFile):
     requires = [
         ("openssl/3.2.0"),
         ("gtest/cci.20210126"),
-        ("libcurl/8.5.0")]
+        ("libcurl/8.5.0"),
+        ("nlohmann_json/3.11.3")
+    ]
     default_options = {
         "libcurl/*:with_ssl": "openssl",
     }

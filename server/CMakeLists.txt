@@ -14,6 +14,13 @@ add_executable(${PROJECT_NAME}
         ${HEADERS}
         ${SOURCE})
 
-target_include_directories(${PROJECT_NAME} PRIVATE ${CMAKE_SOURCE_DIR}/inc)
-target_link_libraries(${PROJECT_NAME} CURL)
+target_include_directories(${PROJECT_NAME}
+        PRIVATE ${CMAKE_SOURCE_DIR}/inc)
+
+find_package(nlohmann_json REQUIRED)
+find_package(CURL REQUIRED)
+
+target_link_libraries(${PROJECT_NAME}
+        PRIVATE CURL::libcurl
+        PRIVATE nlohmann_json::nlohmann_json)
 

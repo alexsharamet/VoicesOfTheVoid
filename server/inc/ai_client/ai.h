@@ -22,6 +22,7 @@ namespace AI {
         void initGlobalInstance();
         void addHeader();
         [[nodiscard]] std::string getURL() const;
+        [[nodiscard]] std::string parse() const;
 
     private:
         CURL *m_curl;
