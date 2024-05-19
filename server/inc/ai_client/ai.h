@@ -13,7 +13,7 @@ namespace AI {
         AI();
         ~AI();
 
-        void setHost(std::string_view host);
+        void setHost(const std::string& host);
         void setPort(int port);
 
         [[nodiscard]] std::string sendPromtSync(std::string_view promt);

@@ -1,11 +1,9 @@
 #include "ai_client/ai.h"
 
-#include <nlohmann/json.hpp>
+#include "ext/json.h"
 
 #include <cassert>
 #include <iostream>
-
-using json = nlohmann::json;
 
 namespace {
     size_t writeFunc(const char *ptr, size_t size, size_t nMemb, void *userData) {
@@ -94,7 +92,7 @@ namespace AI {
         return "http://" + m_host + ":" + std::to_string(m_port) + "/api/extra/generate/stream";
     }
 
-    void AI::setHost(std::string_view host) {
+    void AI::setHost(const std::string &host) {
         m_host = host;
     }
 
@@ -103,13 +101,15 @@ namespace AI {
     }
 
     std::string AI::parse() const {
+        std::cout << "AI response: " << m_buffer << std::endl;
+
         std::string res;
         int i = 0;
         std::string data;
         while (i < m_buffer.length()) {
             std::tie(data, i) = extractJson(m_buffer, i);
             if (!data.empty()) {
-                json val = json::parse(data);
+                nlh::json val = nlh::json::parse(data);
                 res += val["token"];
             }
         }
@@ -117,6 +117,7 @@ namespace AI {
     }
 
     std::string AI::sendPromtSync(std::string_view promt) {
+        m_buffer.clear();
         const auto url = getURL();
         curl_easy_setopt(m_curl, CURLOPT_URL, url.c_str());
         curl_easy_setopt(m_curl, CURLOPT_POSTFIELDS, promt);
