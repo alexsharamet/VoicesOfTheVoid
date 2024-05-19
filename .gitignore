@@ -30,3 +30,9 @@
 *.exe
 *.out
 *.app
+
+# IDE
+cmake-*
+conan-deps-*
+CMakeUserPresets.json
+.idea
