@@ -13,7 +13,7 @@
 namespace Logic {
     class CoreLogic {
     public:
-        explicit CoreLogic();
+        CoreLogic();
         bool registerUser(std::string_view name);
         std::string send(std::string_view user, std::string_view instruction);
 

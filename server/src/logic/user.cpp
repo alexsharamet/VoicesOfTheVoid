@@ -24,7 +24,7 @@ namespace Logic {
         return m_lock;
     }
 
-    PromtHistory User::getHistory() const {
+    const PromtHistory &User::getHistoryRef() const {
         return m_history;
     }
 

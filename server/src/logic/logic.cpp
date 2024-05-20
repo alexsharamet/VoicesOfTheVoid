@@ -98,7 +98,13 @@ namespace Logic {
         if (!lock.try_lock()) {
             return "User already obtained";
         }
-        json["prompt"] = fmt::format("\n### Instruction:\n{}\n### Response:\n", instruction);
+        std::string promtString;
+        auto &history = user->getHistoryRef();
+        for (const auto &promt: history) {
+            promtString += fmt::format("### Instruction:\n{}\n### Response:\n{}\n", promt.first, promt.second);
+        }
+        promtString += fmt::format("### Instruction:\n{}\n### Response:\n", instruction);
+        json["prompt"] = promtString;
 
         const auto promt = json.dump();
         std::cout << "Promt sent: " << promt << std::endl;

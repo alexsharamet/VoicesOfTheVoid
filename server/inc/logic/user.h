@@ -16,7 +16,7 @@ namespace Logic {
         [[nodiscard]] nlh::json toJson() const;
 
         std::mutex& getLockRef();
-        [[nodiscard]] PromtHistory getHistory() const;
+        [[nodiscard]] const PromtHistory& getHistoryRef() const;
         void addPromt(Promt promt);
 
     private:
