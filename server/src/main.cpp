@@ -1,31 +1,17 @@
 #include "ai_client/ai.h"
 #include "logic/logic.h"
 #include "server/http_server.h"
+#include "utils/config.h"
 
 #include <iostream>
 
-nlh::json readConfig() {
-    nlh::json cnfg;
-    cnfg["ai_host"] = "192.168.1.68";
-    cnfg["ai_port"] = 5001;
-
-    nlh::json alex;
-    alex["name"] = "alex";
-
-    nlh::json users;
-    users.push_back(alex);
-
-    cnfg["users"] = users;
-
-    return cnfg;
-}
-
-int main() {
+int main(int argc, char *argv[]) {
     try {
-        auto cnfg = readConfig();
-        std::cout << "Read config :" << cnfg << std::endl;
+        assert(argc == 2);
 
-        Logic::CoreLogic logic(cnfg);
+        Utils::Config::instance().load(argv[1]);
+
+        Logic::CoreLogic logic;
         Server::HttpServer server;
         server.setRegisterHandler([&logic](std::string_view name) {
             return logic.registerUser(name);
@@ -34,10 +20,9 @@ int main() {
             return logic.send(usr, instruction);
         });
 
-        server.listen(8080);
-
-        cnfg = logic.toJson();
-        std::cout << "Write config :" << cnfg << std::endl;
+        server.listen(Utils::Config::instance().getPort());
+        logic.save();
+        Utils::Config::instance().save();
     } catch (...) {
         std::cerr << "something went wrong";
     }

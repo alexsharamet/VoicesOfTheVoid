@@ -7,14 +7,17 @@ set(HEADERS
         inc/ext/json.h
         inc/ai_client/ai.h
         inc/server/http_server.h
+        inc/logic/promt.h
         inc/logic/logic.h
-        inc/logic/user.h)
+        inc/logic/user.h
+        inc/utils/config.h)
 
 set(SOURCE
         src/ai_client/ai.cpp
         src/server/http_server.cpp
         src/logic/logic.cpp
         src/logic/user.cpp
+        src/utils/config.cpp
         src/main.cpp)
 
 add_executable(${PROJECT_NAME}

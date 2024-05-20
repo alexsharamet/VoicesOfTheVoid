@@ -3,6 +3,10 @@
 
 namespace Server {
     HttpServer::HttpServer() {
+        svr.Get("/exit", [this](const httplib::Request &, httplib::Response &res) {
+            res.set_content("OK", "text/plain");
+            svr.stop();
+        });
 
         svr.Get("/auth", [](const httplib::Request &, httplib::Response &res) {
             res.set_content("Hello World", "text/plain");

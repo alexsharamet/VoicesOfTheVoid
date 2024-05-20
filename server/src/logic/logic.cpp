@@ -42,63 +42,70 @@ namespace {
 }// namespace
 
 namespace Logic {
-    CoreLogic::CoreLogic(nlh::json cnfg)
-        : m_cnfg(std::move(cnfg)) {
+    CoreLogic::CoreLogic() {
+        auto &config = Utils::Config::instance();
 
-        bool success = true;
-        success &= m_cnfg.contains("ai_host");
-        success &= m_cnfg.contains("ai_port");
-        assert(success);
+        m_ai.setHost(config.getAIHost());
+        m_ai.setPort(config.getAIPort());
 
-        m_ai.setHost(m_cnfg["ai_host"]);
-        m_ai.setPort(m_cnfg["ai_port"]);
-
-        if (m_cnfg.contains("users")) {
-            for (const auto &userJson: m_cnfg["users"]) {
-                User user(userJson);
-                const auto name = user.getName();
-                m_users.insert({name, std::move(user)});
+        auto users = config.getUsers();
+        for (const auto &user: users) {
+            if (user.contains("name")) {
+                m_users.insert({user["name"], std::make_shared<User>(user)});
+            } else {
+                assert(false);
             }
         }
     }
 
-    nlh::json CoreLogic::toJson() const {
-        nlh::json users = nlh::json::array();
-        for (const auto &[name, user]: m_users) {
-            users.push_back(user.toJson());
+    void CoreLogic::save() {
+        std::vector<nlh::json> users;
+        for (const auto &[key, value]: m_users) {
+            auto user = value->toJson();
+            user["name"] = key;
+            users.push_back(std::move(user));
         }
-
-        auto cnfg{m_cnfg};
-        cnfg["users"] = users;
-
-        return cnfg;
+        Utils::Config::instance().setUsers(users);
     }
 
     bool CoreLogic::registerUser(std::string_view name) {
         std::string userName{name};
         std::lock_guard lock{m_usersLock};
-        if (m_users.find(userName) != m_users.end()) {
+
+        if (m_users.find(std::string{name}) != m_users.end()) {
             return false;//TODO return enum
         }
 
-        m_users.insert({userName, User{userName}});
+        m_users.emplace(name, std::make_shared<User>());
         return true;
     }
 
-    std::string CoreLogic::send(std::string_view user, std::string_view instruction) {
-        std::unique_lock lock{m_usersLock};
-        auto it = m_users.find(std::string{user});
-        if (it == m_users.end()) {
-            return "User not found";
+    std::string CoreLogic::send(std::string_view name, std::string_view instruction) {
+        std::shared_ptr<User> user{nullptr};
+        {
+            std::lock_guard lock{m_usersLock};
+            auto it = m_users.find(std::string{name});
+            if (it == m_users.end()) {
+                return "User not found";
+            }
+            user = it->second;
         }
-        lock.unlock();
 
         static nlh::json BASE_PROMT = createPromt();
         auto json{BASE_PROMT};
+
+        std::unique_lock lock{user->getLockRef(), std::defer_lock};
+        if (!lock.try_lock()) {
+            return "User already obtained";
+        }
         json["prompt"] = fmt::format("\n### Instruction:\n{}\n### Response:\n", instruction);
 
         const auto promt = json.dump();
         std::cout << "Promt sent: " << promt << std::endl;
-        return m_ai.sendPromtSync(promt);
+
+        auto response = m_ai.sendPromtSync(promt);
+        user->addPromt({std::string{instruction}, response});
+
+        return response;
     }
 }// namespace Logic

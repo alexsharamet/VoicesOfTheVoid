@@ -1,21 +1,26 @@
 #pragma once
 
 #include "ext/json.h"
+#include "promt.h"
 
 #include <deque>
 #include <string>
 
 namespace Logic {
+    using UserKey = std::string;
+
     class User {
     public:
-        explicit User(const std::string& name);
+        User() = default;
         explicit User(nlh::json json);
+        [[nodiscard]] nlh::json toJson() const;
 
-        [[nodiscard]] bool operator<(const User& rhs) const noexcept;
-        std::string getName() const noexcept;
+        std::mutex& getLockRef();
+        [[nodiscard]] PromtHistory getHistory() const;
+        void addPromt(Promt promt);
 
-        nlh::json toJson() const;
     private:
-        std::string m_name;
+        std::mutex m_lock;
+        PromtHistory m_history;
     };
 }// namespace Logic
