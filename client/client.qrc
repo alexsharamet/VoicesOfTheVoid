@@ -1,0 +1,6 @@
+<RCC>
+    <qresource prefix="/">
+        <file>res/ui/form.qml</file>
+        <file>res/ui/back.jpeg</file>
+    </qresource>
+</RCC>
