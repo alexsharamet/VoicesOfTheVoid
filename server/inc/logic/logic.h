@@ -14,6 +14,7 @@ namespace Logic {
     class CoreLogic {
     public:
         CoreLogic();
+        bool authUser(std::string_view name);
         bool registerUser(std::string_view name);
         std::string send(std::string_view user, std::string_view instruction);
 

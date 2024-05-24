@@ -13,6 +13,9 @@ int main(int argc, char *argv[]) {
 
         Logic::CoreLogic logic;
         Server::HttpServer server;
+        server.setAuthHandler([&logic](std::string_view name) {
+            return logic.authUser(name);
+        });
         server.setRegisterHandler([&logic](std::string_view name) {
             return logic.registerUser(name);
         });

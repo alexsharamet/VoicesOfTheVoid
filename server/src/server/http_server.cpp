@@ -25,6 +25,26 @@ namespace Server {
         svr.listen("0.0.0.0", port);
     }
 
+    void HttpServer::setAuthHandler(std::function<bool(std::string /*name*/)> handler) {
+        svr.Post("/auth", [handler = std::move(handler)](const httplib::Request &req, httplib::Response &res) {
+            nlh::json jsonReq = nlh::json::parse(req.body);
+            nlh::json jsonRes;
+
+            bool success = true;
+            success &= jsonReq.contains("name");
+            if (!success) {
+                jsonRes["error"] = "Wrong args";
+                res.set_content(jsonRes.dump(), "application/json");
+                return;
+            }
+            std::string name = jsonReq["name"];
+
+            const auto answer = handler(name);
+            jsonRes["answer"] = answer;
+            res.set_content(jsonRes.dump(), "application/json");
+        });
+    }
+
     void HttpServer::setRegisterHandler(std::function<bool(std::string /*name*/)> handler) {
         svr.Post("/register", [handler = std::move(handler)](const httplib::Request &req, httplib::Response &res) {
             nlh::json jsonReq = nlh::json::parse(req.body);

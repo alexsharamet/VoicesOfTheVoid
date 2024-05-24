@@ -68,6 +68,13 @@ namespace Logic {
         Utils::Config::instance().setUsers(users);
     }
 
+    bool CoreLogic::authUser(std::string_view name) {
+        std::string userName{name};
+        std::lock_guard lock{m_usersLock};
+
+        return m_users.find(std::string{name}) != m_users.end();
+    }
+
     bool CoreLogic::registerUser(std::string_view name) {
         std::string userName{name};
         std::lock_guard lock{m_usersLock};
