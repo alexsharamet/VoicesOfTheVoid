@@ -12,6 +12,8 @@ set(HEADERS
         inc/logic/promt.h
         inc/logic/logic.h
         inc/logic/user.h
+        inc/logic/strategy.h
+        inc/logic/strategy/ai_strategy.h
         inc/utils/config.h)
 
 set(SOURCE
@@ -19,6 +21,7 @@ set(SOURCE
         src/server/http_server.cpp
         src/logic/logic.cpp
         src/logic/user.cpp
+        src/logic/strategy/ai_strategy.cpp
         src/utils/config.cpp
         src/main.cpp)
 

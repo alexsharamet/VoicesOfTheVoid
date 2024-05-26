@@ -1,6 +1,7 @@
 #pragma once
 
 #include "ext/json.h"
+#include "logic/strategy.h"
 #include "promt.h"
 
 #include <deque>
@@ -15,12 +16,16 @@ namespace Logic {
         explicit User(nlh::json json);
         [[nodiscard]] nlh::json toJson() const;
 
-        std::mutex& getLockRef();
-        [[nodiscard]] const PromtHistory& getHistoryRef() const;
-        void addPromt(Promt promt);
+        std::mutex &getLockRef();
+        void setGenStrategy(std::shared_ptr<IStrategy> strategy);
+        void setCorruptionStrategy(std::shared_ptr<ICorruptionStrategy> strategy);
+
+        std::string ask(std::string text);
+        void changeWeight(int weight);
 
     private:
         std::mutex m_lock;
-        PromtHistory m_history;
+        std::shared_ptr<IStrategy> m_genStrategy;
+        std::shared_ptr<ICorruptionStrategy> m_corruptionStrategy;
     };
 }// namespace Logic
