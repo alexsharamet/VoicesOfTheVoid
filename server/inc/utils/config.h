@@ -12,6 +12,7 @@ namespace Utils {
         void load(std::filesystem::path path);
         void save();
 
+        int getVersion() const;
         std::string getAIHost() const;
         int getAIPort() const;
         int getHistorySize() const;

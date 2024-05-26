@@ -11,21 +11,33 @@ namespace Logic {
 
     Q_SIGNALS:
         void gotNetworkError(QString);
+        void gotWrongServerVersion();
+        void gotWrongResponseFormat();
+        void gotUnknownError();
+        void gotWrongRequestsArgs();
+        void gotUserIsNotExist();
+        void gotNameIsAlreadyExist();
+        void gotUserIsBusy();
 
-        void gotRegister(QString id, bool success);
-        void gotAuth(QString id, bool success);
+        void gotRegister(QString id);
+        void gotAuth(QString id);
         void gotSend(QString answer);
+        void gotTune();
+        void gotBoost();
 
     public:
         explicit Network(QObject *parent = nullptr);
         void setConnection(QString host, int port);
 
     public://Requests
-        void registerClient(const QString &name);
-        void authClient(const QString &name);
-        void send(const QString& name, const QString& instruction);
+        void registerClient(const QString &name, int version);
+        void authClient(const QString &name, int version);
+        void send(const QString &name, const QString &instruction);
+        void tune(const QString &name);
+        void boost(const QString &name);
 
     private:
+        bool handleServerError(const QString &body);
         void handleError(QNetworkReply *reply);
         void createPostRequest(QString pattern, const QJsonObject &body, std::function<void(QString)> handler);
 

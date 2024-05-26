@@ -1,0 +1,11 @@
+#pragma once
+
+enum class ERROR_CODE : int {
+  WRONG_CLIENT_VERSION = -2,
+  UNKNOWN = -1,
+  OK = 0,
+  WRONG_REQUEST_ARGS = 1,
+  USER_IS_NOT_EXIST = 2,
+  THIS_NAME_IS_ALREADY_EXIST = 3,
+  USER_IS_BUSY = 4
+};

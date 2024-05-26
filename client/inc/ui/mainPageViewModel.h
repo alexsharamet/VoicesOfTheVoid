@@ -4,27 +4,29 @@
 #include <QQuickView>
 #include <QString>
 
+#include "mainPageModel.h"
+
 namespace UI {
     class MainPageViewModel : public QObject {
         Q_OBJECT
-        Q_PROPERTY(QString input READ input WRITE setInput NOTIFY inputChanged)
-        Q_PROPERTY(QString output READ output WRITE setOutput NOTIFY outputChanged)
+        Q_PROPERTY(QString input READ input NOTIFY inputChanged)
 
     Q_SIGNALS:
         void inputChanged();
-        void outputChanged();
+
+    public://QML_CALL
+        [[nodiscard]] QString input() const;
+        Q_INVOKABLE void setMessage(const QString& text);
+        Q_INVOKABLE void tuneButtonCicked();
+        Q_INVOKABLE void boostButtonClicked();
 
     public:
-        explicit MainPageViewModel(QQuickView &view, QString name, QObject *parent = nullptr);
-
-        [[nodiscard]] QString input() const;
-        void setInput(const QString &text);
-
-        [[nodiscard]] QString output() const;
-        void setOutput(const QString &text);
+        explicit MainPageViewModel(QQuickView &view, const QString& name, QObject *parent = nullptr);
+        void setModel(MainPageModel *model);
 
     private:
         QString m_input;
-        QString m_output;
+
+        MainPageModel *m_model{nullptr};
     };
 }// namespace UI

@@ -4,16 +4,15 @@ project(client)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTORCC ON)
+set(SHARED_FOLDER ${CMAKE_SOURCE_DIR}/../shared)
 
-find_package(nlohmann_json REQUIRED)
-find_package(httplib REQUIRED)
-find_package(fmt REQUIRED)
 find_package(Qt6Core REQUIRED)
 find_package(Qt6Quick REQUIRED)
 find_package(Qt6Gui REQUIRED)
 find_package(Qt6Qml REQUIRED)
 
 set(HEADERS
+        ${SHARED_FOLDER}/error_codes.h
         inc/ui/mainPageViewModel.h
         inc/ui/mainPageModel.h
         inc/utils/config.h
@@ -37,12 +36,10 @@ add_executable(${PROJECT_NAME}
         ${SOURCE})
 
 target_include_directories(${PROJECT_NAME}
-        PRIVATE ${CMAKE_SOURCE_DIR}/inc)
+        PRIVATE ${CMAKE_SOURCE_DIR}/inc
+        PRIVATE ${SHARED_FOLDER})
 
 target_link_libraries(${PROJECT_NAME} PRIVATE
-        nlohmann_json::nlohmann_json
-        httplib::httplib
-        fmt::fmt
         Qt6::Core Qt6::Quick Qt6::Gui Qt6::Qml)
 
 qt_add_resources(${PROJECT_NAME} "client"

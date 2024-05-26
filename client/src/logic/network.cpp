@@ -3,6 +3,8 @@
 #include <QJsonDocument>
 #include <QJsonObject>
 
+#include "error_codes.h"
+
 namespace Logic {
     Network::Network(QObject *parent)
         : QObject(parent) {
@@ -23,7 +25,9 @@ namespace Logic {
 
             auto content = QString::fromUtf8(reply->readAll());
             reply->deleteLater();
-            handler(content);
+            if (handleServerError(content)) {
+                handler(content);
+            }
         });
     }
 
@@ -38,40 +42,99 @@ namespace Logic {
         Q_EMIT gotNetworkError(err);
     }
 
-    void Network::registerClient(const QString &name) {
+    bool Network::handleServerError(const QString &body) {
+        const auto doc = QJsonDocument::fromJson(body.toUtf8());
+        if (!doc.isObject()) {
+            Q_EMIT gotWrongResponseFormat();
+            return false;
+        }
+        const auto obj = doc.object();
+        if (!obj.contains("error")) {
+            return true;//NO ERROR
+        }
+
+        const auto error = obj["error"].toInt(-1);
+        if (error == -1) {
+            Q_EMIT gotUnknownError();
+            return false;
+        }
+
+        const auto err = static_cast<ERROR_CODE>(error);
+        switch (err) {
+            case ERROR_CODE::UNKNOWN:
+                Q_EMIT gotUnknownError();
+                break;
+            case ERROR_CODE::OK:
+                //NO Error
+                break;
+            case ERROR_CODE::WRONG_REQUEST_ARGS:
+                Q_EMIT gotWrongRequestsArgs();
+                break;
+            case ERROR_CODE::USER_IS_NOT_EXIST:
+                Q_EMIT gotUserIsNotExist();
+                break;
+            case ERROR_CODE::THIS_NAME_IS_ALREADY_EXIST:
+                Q_EMIT gotNameIsAlreadyExist();
+                break;
+            case ERROR_CODE::USER_IS_BUSY:
+                Q_EMIT gotUserIsBusy();
+                break;
+            case ERROR_CODE::WRONG_CLIENT_VERSION:
+                Q_EMIT gotWrongServerVersion();
+                break;
+        }
+
+        return false;
+    }
+
+    void Network::registerClient(const QString &name, int version) {
         QJsonObject body;
         body["name"] = name;
+        body["version"] = version;
 
-        createPostRequest("/register", body, [this, name](const QString &body) {
-            auto obj = QJsonDocument::fromJson(body.toUtf8()).object();
-            bool res = obj["answer"].toBool();
-
-            Q_EMIT gotRegister(name, res);
+        createPostRequest("/register", body, [this, name](const QString &) {
+            Q_EMIT gotRegister(name);
         });
     }
 
-    void Network::authClient(const QString &name) {
+    void Network::authClient(const QString &name, int version) {
         QJsonObject body;
         body["name"] = name;
+        body["version"] = version;
 
-        createPostRequest("/auth", body, [this, name](const QString &body) {
-            auto obj = QJsonDocument::fromJson(body.toUtf8()).object();
-            bool res = obj["answer"].toBool();
-
-            Q_EMIT gotAuth(name, res);
+        createPostRequest("/auth", body, [this, name](const QString &) {
+            Q_EMIT gotAuth(name);
         });
     }
 
     void Network::send(const QString &name, const QString &instruction) {
         QJsonObject body;
-        body["usr"] = name;
+        body["name"] = name;
         body["instruction"] = instruction;
 
         createPostRequest("/send", body, [this, name](const QString &body) {
             auto obj = QJsonDocument::fromJson(body.toUtf8()).object();
-            auto res = obj["answer"].toString();
+            auto res = obj["response"].toString();
 
             Q_EMIT gotSend(res);
+        });
+    }
+
+    void Network::tune(const QString& name) {
+        QJsonObject body;
+        body["name"] = name;
+
+        createPostRequest("/tune", body, [this, name](const QString &) {
+            Q_EMIT gotTune();
+        });
+    }
+
+    void Network::boost(const QString& name) {
+        QJsonObject body;
+        body["name"] = name;
+
+        createPostRequest("/boost", body, [this, name](const QString &) {
+            Q_EMIT gotBoost();
         });
     }
 }// namespace Logic

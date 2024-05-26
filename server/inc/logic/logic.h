@@ -4,6 +4,7 @@
 #include "ai_client/ai.h"
 #include "utils/config.h"
 
+#include "error_codes.h"
 #include "ext/json.h"
 
 #include <memory>
@@ -14,11 +15,16 @@ namespace Logic {
     class CoreLogic {
     public:
         CoreLogic();
-        bool authUser(std::string_view name);
-        bool registerUser(std::string_view name);
-        std::string send(std::string_view user, std::string_view instruction);
+        ERROR_CODE authUser(std::string_view name);
+        ERROR_CODE registerUser(std::string_view name);
+        ERROR_CODE send(std::string_view name, std::string_view instruction, std::string &response);
+        ERROR_CODE tune(std::string_view name);
+        ERROR_CODE boost(std::string_view name);
 
         void save();
+
+    private:
+        std::shared_ptr<User> getUser(UserKey);
 
     private:
         AI::AI m_ai;//TODO: shared resource fix data race

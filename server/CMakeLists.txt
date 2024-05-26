@@ -2,8 +2,10 @@ cmake_minimum_required(VERSION 3.22)
 project(server)
 
 set(CMAKE_CXX_STANDARD 17)
+set(SHARED_FOLDER ${CMAKE_SOURCE_DIR}/../shared)
 
 set(HEADERS
+        ${SHARED_FOLDER}/error_codes.h
         inc/ext/json.h
         inc/ai_client/ai.h
         inc/server/http_server.h
@@ -25,7 +27,8 @@ add_executable(${PROJECT_NAME}
         ${SOURCE})
 
 target_include_directories(${PROJECT_NAME}
-        PRIVATE ${CMAKE_SOURCE_DIR}/inc)
+        PRIVATE ${CMAKE_SOURCE_DIR}/inc
+        PRIVATE ${SHARED_FOLDER})
 
 find_package(nlohmann_json REQUIRED)
 find_package(CURL REQUIRED)

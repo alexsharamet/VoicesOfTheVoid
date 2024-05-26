@@ -10,6 +10,7 @@
 
 void loadConfig() {
     Utils::Config::instance().load();
+    Utils::Config::instance().setVersion(1);
     Utils::Config::instance().save();
 }
 
@@ -38,15 +39,7 @@ UI::MainPageModel *createMainPageModel(Logic::Network *network) {
 
 UI::MainPageViewModel *createMainPageViewModel(QQuickView *view, UI::MainPageModel *model) {
     auto viewModel = new UI::MainPageViewModel(*view, "mainPageViewModel");
-
-    QObject::connect(viewModel, &UI::MainPageViewModel::outputChanged, model, [viewModel, model] {
-        model->message(viewModel->output());
-    });
-
-    QObject::connect(model, &UI::MainPageModel::gotMessage, viewModel, [viewModel, model](QString text) {
-        viewModel->setInput(text);
-    });
-
+    viewModel->setModel(model);
     return viewModel;
 }
 

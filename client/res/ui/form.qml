@@ -57,8 +57,35 @@ Page {
 			anchors.topMargin: 50
 			text: "Send"
 			onClicked: {
-				mainPageViewModel.output = output_dialog.text
+				mainPageViewModel.setMessage(output_dialog.text)
 			}
 		}
+
+		Button {
+            id: tune_button
+            width: 200
+            height: 50
+            anchors.left: output_dialog.left
+            anchors.top: output_dialog.bottom
+            anchors.topMargin: 50
+            text: "Tune"
+            onClicked: {
+                mainPageViewModel.tuneButtonCicked()
+            }
+        }
+
+        Button {
+            id: boost_button
+            width: 200
+            height: 50
+            anchors.left: tune_button.right
+            anchors.top: output_dialog.bottom
+            anchors.leftMargin: 50
+            anchors.topMargin: 50
+            text: "Boost"
+            onClicked: {
+                mainPageViewModel.boostButtonClicked()
+            }
+         }
 	}
 }

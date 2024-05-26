@@ -16,6 +16,7 @@ namespace Utils {
         m_cnfg = nlh::json::parse(str);
 
         bool success = true;
+        success &= m_cnfg.contains("version");
         success &= m_cnfg.contains("ai_host");
         success &= m_cnfg.contains("ai_port");
         success &= m_cnfg.contains("port");
@@ -30,6 +31,10 @@ namespace Utils {
     void Config::save() {
         std::ofstream out(m_path);
         out << std::setw(4) << m_cnfg;
+    }
+
+    int Config::getVersion() const {
+        return m_cnfg["version"];
     }
 
     std::string Config::getAIHost() const {
@@ -48,7 +53,7 @@ namespace Utils {
         return m_cnfg["port"];
     }
 
-    void Config::setUsers(const std::vector<nlh::json>& users) {
+    void Config::setUsers(const std::vector<nlh::json> &users) {
         m_cnfg["users"] = users;
     }
 

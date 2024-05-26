@@ -10,6 +10,9 @@ namespace Utils {
         void load();
         void save();
 
+        int getVersion() const;
+        void setVersion(int version);
+
         QString getId() const;
         void setId(QString id);
 
@@ -23,7 +26,8 @@ namespace Utils {
         Config() = default;
 
     private:
-        QSettings* m_settings;
+        QSettings *m_settings;
+        int m_version;
         QString m_id;
         QString m_host;
         int m_port;

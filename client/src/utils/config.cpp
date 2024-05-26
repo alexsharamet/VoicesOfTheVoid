@@ -20,16 +20,30 @@ namespace Utils {
         } else {
             m_id = id.toString();
         }
-
+        auto version = m_settings->value("version");
+        if (version.isNull()) {
+            m_version = 0;
+        } else {
+            m_version = version.toInt();
+        }
         m_host = m_settings->value("host").toString();
         m_port = m_settings->value("port").toInt();
     }
 
     void Config::save() {
+        m_settings->setValue("version", m_version);
         m_settings->setValue("id", m_id);
         m_settings->setValue("host", m_host);
         m_settings->setValue("port", m_port);
         m_settings->sync();
+    }
+
+    int Config::getVersion() const {
+        return m_version;
+    }
+
+    void Config::setVersion(int version) {
+        m_version = version;
     }
 
     QString Config::getId() const {
