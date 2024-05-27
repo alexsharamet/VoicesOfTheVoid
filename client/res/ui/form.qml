@@ -11,6 +11,7 @@ Page {
         id: background
         anchors.fill : parent
         color: "transparent"
+        opacity: 0.5
 
         Image {
             anchors.fill : parent
@@ -31,12 +32,17 @@ Page {
 			anchors.leftMargin: parent.width * 0.1
 			anchors.top: parent.top
 			anchors.topMargin: parent.height * 0.1
-			opacity: 0.5
 			text: mainPageViewModel.input
+			background: Rectangle {
+                            radius: 5
+                            color: "transparent"
+                            anchors.fill : parent
+                            border.color: "#333"
+                            border.width: 1
+                        }
 
 			readOnly: true
 		}		
-
 
 		TextField {
 			id: output_dialog
@@ -45,7 +51,14 @@ Page {
 			anchors.left: input_dialog.left
 			anchors.top: input_dialog.bottom
 			anchors.topMargin: 50
-			opacity: 0.5
+
+            background: Rectangle {
+                radius: 5
+                color: "transparent"
+                anchors.fill : parent
+                border.color: "#333"
+                border.width: 1
+            }
 		}
 		
 		Button {
