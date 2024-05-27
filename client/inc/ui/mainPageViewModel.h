@@ -13,15 +13,16 @@ namespace UI {
 
     Q_SIGNALS:
         void inputChanged();
+        void changeSpinnerState(bool running);
 
     public://QML_CALL
         [[nodiscard]] QString input() const;
-        Q_INVOKABLE void setMessage(const QString& text);
+        Q_INVOKABLE void setMessage(const QString &text);
         Q_INVOKABLE void tuneButtonCicked();
         Q_INVOKABLE void boostButtonClicked();
 
     public:
-        explicit MainPageViewModel(QQuickView &view, const QString& name, QObject *parent = nullptr);
+        explicit MainPageViewModel(QQuickView &view, const QString &name, QObject *parent = nullptr);
         void setModel(MainPageModel *model);
 
     private:

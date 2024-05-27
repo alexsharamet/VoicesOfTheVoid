@@ -1,14 +1,21 @@
 import QtQuick 2.15
 import QtQuick.Window 2.15
 import QtQuick.Controls 2.15
+import QtQuick.Controls.Basic
 
 Page {
     id: root
     width: 1280
     height: 860
 
+    Connections {
+        target: mainPageViewModel
+        function onChangeSpinnerState(running) {
+            loader.running = running
+        }
+    }
+
     Rectangle {
-        id: background
         anchors.fill : parent
         color: "transparent"
         opacity: 0.5
@@ -99,6 +106,15 @@ Page {
             onClicked: {
                 mainPageViewModel.boostButtonClicked()
             }
+         }
+
+         BusyIndicator {
+            id: loader
+            anchors.right: parent.right
+            anchors.bottom: parent.bottom
+            anchors.rightMargin: 10
+            anchors.bottomMargin: 10
+            running: false
          }
 	}
 }
