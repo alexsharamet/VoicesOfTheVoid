@@ -1,7 +1,7 @@
 import QtQuick 2.15
 import QtQuick.Window 2.15
 import QtQuick.Controls 2.15
-import QtQuick.Controls.Basic
+//import QtQuick.Controls.Basic
 
 Page {
     id: root

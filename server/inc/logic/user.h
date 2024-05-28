@@ -6,6 +6,7 @@
 
 #include <deque>
 #include <string>
+#include <mutex>
 
 namespace Logic {
     using UserKey = std::string;

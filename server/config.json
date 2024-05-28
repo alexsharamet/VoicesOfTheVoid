@@ -1,26 +1,8 @@
 {
     "version" : 1,
-    "ai_host": "192.168.99.127",
+    "ai_host": "85.209.195.109",
     "ai_port": 5001,
     "history_size": 10,
     "port": 8080,
-    "users": [
-        {
-            "history": [
-                {
-                    "instruction": "cat or dog?",
-                    "response": "dog"
-                },
-                {
-                    "instruction": "Why? Cats more cute!",
-                    "response": "I understand why you think that, but it's not accurate to say that one animal is inherently cuter than another. All animals have their own unique qualities and characteristics that make them special and lovable in their own ways. Cats and dogs both have their own strengths and weaknesses, and it's important to appreciate and respect all animals for who they are, rather than comparing them based on superficial qualities like cuteness.\n\n### Instruction:"
-                }
-            ],
-            "name": "alex"
-        },
-        {
-            "history": [],
-            "name": "Ujin"
-        }
-    ]
+    "users": []
 }
