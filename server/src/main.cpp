@@ -14,6 +14,7 @@ ERROR_CODE validateVersion(int version) {
 }
 
 int main(int argc, char *argv[]) {
+    std::srand(std::time(nullptr));
     try {
         assert(argc == 2);
 

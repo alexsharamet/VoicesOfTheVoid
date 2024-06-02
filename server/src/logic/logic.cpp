@@ -7,6 +7,19 @@
 #include <iostream>
 
 namespace Logic {
+    void selectStrategy(User &user) {
+        static auto multiplier = (static_cast<int>(StrategyTypes::COUNT) - 1) / static_cast<float>(RAND_MAX);
+        auto selected = static_cast<StrategyTypes>(static_cast<int>(std::rand() * multiplier));
+        std::cout << "Selected strategy: " << static_cast<int>(selected) << std::endl;
+        switch (selected) {
+            case StrategyTypes::AI:
+                user.setGenStrategy(std::make_shared<AIStrategy>());
+                break;
+            default:
+                user.setGenStrategy(std::make_shared<EchoStrategy>());
+        }
+    }
+
     CoreLogic::CoreLogic() {
         auto &config = Utils::Config::instance();
         auto users = config.getUsers();
@@ -57,8 +70,8 @@ namespace Logic {
         }
 
         auto user = std::make_shared<User>();
-        user->setGenStrategy(std::make_shared<EchoStrategy>());
         user->setCorruptionStrategy(std::make_shared<EchoStrategy>());
+        selectStrategy(*user);
         m_users.emplace(name, user);
         return ERROR_CODE::OK;
     }
@@ -90,7 +103,7 @@ namespace Logic {
             return ERROR_CODE::USER_IS_BUSY;
         }
 
-        user->setGenStrategy(std::make_shared<AIStrategy>());
+        selectStrategy(*user);
 
         return ERROR_CODE::OK;
     }

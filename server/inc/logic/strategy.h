@@ -16,8 +16,9 @@ namespace Logic {
     };
 
     enum class StrategyTypes {
+        AI,
         Echo,
-        AI
+        COUNT
     };
 
     class EchoStrategy
