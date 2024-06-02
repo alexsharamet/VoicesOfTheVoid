@@ -55,6 +55,8 @@ namespace AI {
     AI::AI(const std::string &host, int port, int timeout)
         : m_client(host, port) {
         m_client.set_connection_timeout(timeout);
+        m_client.set_read_timeout(timeout);
+        m_client.set_write_timeout(timeout);
     }
 
     std::string AI::sendPromtSync(std::string_view promt) {

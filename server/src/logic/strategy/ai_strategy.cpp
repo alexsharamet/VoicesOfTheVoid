@@ -55,7 +55,7 @@ namespace Logic {
 
     std::string AIStrategy::ask(std::string instruction) {
         static nlh::json BASE_PROMT = createPromt();
-        auto json{BASE_PROMT};
+        nlh::json json(BASE_PROMT);
 
         std::string promtString;
         for (const auto &promt: m_history) {
