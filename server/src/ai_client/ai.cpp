@@ -2,7 +2,6 @@
 
 #include "ext/json.h"
 
-#include <cassert>
 #include <iostream>
 
 namespace {
@@ -34,7 +33,7 @@ namespace {
         return {std::string{}, i};
     }
 
-    std::string parse(std::string buffer) {
+    std::string parse(const std::string &buffer) {
         std::cout << "AI response: " << buffer << std::endl;
 
         std::string res;
@@ -47,6 +46,12 @@ namespace {
                 res += val["token"];
             }
         }
+
+        const auto pos = res.find("### Instruction");
+        if (pos != std::string::npos) {
+            return res.substr(0, pos);
+        }
+
         return res;
     }
 }// namespace
