@@ -42,7 +42,7 @@ namespace Logic {
         Utils::Config::instance().setUsers(users);
     }
 
-    std::shared_ptr<User> CoreLogic::getUser(UserKey key) {
+    std::shared_ptr<User> CoreLogic::getUser(const UserKey &key) {
         std::lock_guard lock{m_usersLock};
         auto it = m_users.find(key);
         if (it == m_users.end()) {
@@ -51,33 +51,31 @@ namespace Logic {
         return it->second;
     }
 
-    ERROR_CODE CoreLogic::authUser(std::string_view name) {
-        std::string userName{name};
+    ERROR_CODE CoreLogic::authUser(const std::string &id) {
         std::lock_guard lock{m_usersLock};
-        if (m_users.find(std::string{name}) == m_users.end()) {
+        if (m_users.find(id) == m_users.end()) {
             return ERROR_CODE::USER_IS_NOT_EXIST;
         }
 
         return ERROR_CODE::OK;
     }
 
-    ERROR_CODE CoreLogic::registerUser(std::string_view name) {
-        std::string userName{name};
+    ERROR_CODE CoreLogic::registerUser(const std::string &id) {
         std::lock_guard lock{m_usersLock};
 
-        if (m_users.find(std::string{name}) != m_users.end()) {
+        if (m_users.find(id) != m_users.end()) {
             return ERROR_CODE::THIS_NAME_IS_ALREADY_EXIST;
         }
 
         auto user = std::make_shared<User>();
         user->setCorruptionStrategy(std::make_shared<EchoStrategy>());
         selectStrategy(*user);
-        m_users.emplace(name, user);
+        m_users.emplace(id, user);
         return ERROR_CODE::OK;
     }
 
-    ERROR_CODE CoreLogic::send(std::string_view name, std::string_view instruction, std::string &response) {
-        std::shared_ptr<User> user = getUser(std::string{name});
+    ERROR_CODE CoreLogic::send(const std::string &id, std::string_view instruction, std::string &response) {
+        std::shared_ptr<User> user = getUser(id);
         if (!user) {
             return ERROR_CODE::USER_IS_NOT_EXIST;
         }
@@ -92,8 +90,8 @@ namespace Logic {
         return ERROR_CODE::OK;
     }
 
-    ERROR_CODE CoreLogic::tune(std::string_view name) {
-        std::shared_ptr<User> user = getUser(std::string{name});
+    ERROR_CODE CoreLogic::tune(const std::string &id) {
+        std::shared_ptr<User> user = getUser(id);
         if (!user) {
             return ERROR_CODE::USER_IS_NOT_EXIST;
         }
@@ -108,8 +106,8 @@ namespace Logic {
         return ERROR_CODE::OK;
     }
 
-    ERROR_CODE CoreLogic::boost(std::string_view name) {
-        std::shared_ptr<User> user = getUser(std::string{name});
+    ERROR_CODE CoreLogic::boost(const std::string &id) {
+        std::shared_ptr<User> user = getUser(id);
         if (!user) {
             return ERROR_CODE::USER_IS_NOT_EXIST;
         }

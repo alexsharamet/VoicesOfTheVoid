@@ -39,7 +39,7 @@ namespace Logic {
         }
     }
 
-    std::string User::ask(std::string instruction) {
+    std::string User::ask(const std::string &instruction) {
         auto response = m_corruptionStrategy->corrupt(m_genStrategy->ask(m_history, instruction));
         addPromt({instruction, response});
 

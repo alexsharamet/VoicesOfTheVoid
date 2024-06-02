@@ -22,31 +22,31 @@ int main(int argc, char *argv[]) {
 
         Logic::CoreLogic logic;
         Server::HttpServer server;
-        server.setAuthHandler([&logic](ERROR_CODE &err, std::string_view name, int version) {
+        server.setAuthHandler([&logic](ERROR_CODE &err, std::string_view id, int version) {
             err = validateVersion(version);
             if (err == ERROR_CODE::OK) {
-                err = logic.authUser(name);
+                err = logic.authUser(std::string{id});
             }
             return nlh::json();
         });
-        server.setRegisterHandler([&logic](ERROR_CODE &err, std::string_view name, int version) {
+        server.setRegisterHandler([&logic](ERROR_CODE &err, std::string_view id, int version) {
             err = validateVersion(version);
             if (err == ERROR_CODE::OK) {
-                err = logic.registerUser(name);
+                err = logic.registerUser(std::string{id});
             }
             return nlh::json();
         });
-        server.setSendHandler([&logic](ERROR_CODE &err, std::string_view name, std::string_view instruction) {
+        server.setSendHandler([&logic](ERROR_CODE &err, std::string_view id, std::string_view instruction) {
             std::string response;
-            err = logic.send(name, instruction, response);
+            err = logic.send(std::string{id}, instruction, response);
             return response;
         });
-        server.setTuneHandler([&logic](ERROR_CODE &err, std::string_view name) {
-            err = logic.tune(name);
+        server.setTuneHandler([&logic](ERROR_CODE &err, std::string_view id) {
+            err = logic.tune(std::string{id});
             return nlh::json();
         });
-        server.setBoostHandler([&logic](ERROR_CODE &err, std::string_view name) {
-            err = logic.boost(name);
+        server.setBoostHandler([&logic](ERROR_CODE &err, std::string_view id) {
+            err = logic.boost(std::string{id});
             return nlh::json();
         });
 

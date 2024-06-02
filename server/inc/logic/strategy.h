@@ -6,12 +6,12 @@
 namespace Logic {
     struct IStrategy {
         virtual ~IStrategy() = default;
-        virtual std::string ask(const PromtHistory &history, std::string text) = 0;
+        virtual std::string ask(const PromtHistory &history, const std::string &text) = 0;
     };
 
     struct ICorruptionStrategy {
         virtual ~ICorruptionStrategy() = default;
-        virtual std::string corrupt(std::string text) = 0;
+        virtual std::string corrupt(const std::string &text) = 0;
         virtual void changeWeight(int weight) = 0;
     };
 
@@ -25,11 +25,11 @@ namespace Logic {
         : public ICorruptionStrategy
         , public IStrategy {
     public:
-        std::string ask(const PromtHistory &history, std::string text) final {
+        std::string ask(const PromtHistory &history, const std::string &text) final {
             return text;
         };
 
-        std::string corrupt(std::string text) final {
+        std::string corrupt(const std::string &text) final {
             return text;
         }
 

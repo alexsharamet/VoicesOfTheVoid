@@ -15,16 +15,16 @@ namespace Logic {
     class CoreLogic {
     public:
         CoreLogic();
-        ERROR_CODE authUser(std::string_view name);
-        ERROR_CODE registerUser(std::string_view name);
-        ERROR_CODE send(std::string_view name, std::string_view instruction, std::string &response);
-        ERROR_CODE tune(std::string_view name);
-        ERROR_CODE boost(std::string_view name);
+        ERROR_CODE authUser(const std::string& id);
+        ERROR_CODE registerUser(const std::string& id);
+        ERROR_CODE send(const std::string& id, std::string_view instruction, std::string &response);
+        ERROR_CODE tune(const std::string& id);
+        ERROR_CODE boost(const std::string& id);
 
         void save();
 
     private:
-        std::shared_ptr<User> getUser(UserKey);
+        std::shared_ptr<User> getUser(const UserKey& key);
 
     private:
         std::mutex m_usersLock;

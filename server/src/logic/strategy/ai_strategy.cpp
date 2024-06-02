@@ -49,7 +49,7 @@ namespace Logic {
                                         config.getAITimeout());
     }
 
-    std::string AIStrategy::ask(const PromtHistory &history, std::string instruction) {
+    std::string AIStrategy::ask(const PromtHistory &history, const std::string &instruction) {
         static nlh::json BASE_PROMT = createPromt();
         nlh::json json(BASE_PROMT);
 

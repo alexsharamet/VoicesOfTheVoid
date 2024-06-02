@@ -21,7 +21,7 @@ namespace Logic {
         void setGenStrategy(std::shared_ptr<IStrategy> strategy);
         void setCorruptionStrategy(std::shared_ptr<ICorruptionStrategy> strategy);
 
-        std::string ask(std::string text);
+        std::string ask(const std::string& text);
         void changeWeight(int weight);
 
     private:
