@@ -60,21 +60,21 @@ namespace Logic {
         return ERROR_CODE::OK;
     }
 
-    ERROR_CODE CoreLogic::registerUser(const std::string &id) {
+    ERROR_CODE CoreLogic::registerUser(const std::string &id, const std::string &name) {
         std::lock_guard lock{m_usersLock};
 
         if (m_users.find(id) != m_users.end()) {
             return ERROR_CODE::THIS_NAME_IS_ALREADY_EXIST;
         }
 
-        auto user = std::make_shared<User>();
+        auto user = std::make_shared<User>(name);
         user->setCorruptionStrategy(std::make_shared<EchoStrategy>());
         selectStrategy(*user);
         m_users.emplace(id, user);
         return ERROR_CODE::OK;
     }
 
-    ERROR_CODE CoreLogic::send(const std::string &id, std::string_view instruction, std::string &response) {
+    ERROR_CODE CoreLogic::send(const std::string &id, const std::string &instruction, std::string &response) {
         std::shared_ptr<User> user = getUser(id);
         if (!user) {
             return ERROR_CODE::USER_IS_NOT_EXIST;
@@ -85,7 +85,7 @@ namespace Logic {
             return ERROR_CODE::USER_IS_BUSY;
         }
 
-        response = user->ask(std::string{instruction});
+        response = user->ask(instruction);
 
         return ERROR_CODE::OK;
     }

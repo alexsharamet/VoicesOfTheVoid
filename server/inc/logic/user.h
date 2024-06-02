@@ -13,7 +13,7 @@ namespace Logic {
 
     class User {
     public:
-        User() = default;
+        explicit User(std::string name);
         explicit User(nlh::json json);
         [[nodiscard]] nlh::json toJson() const;
 
@@ -21,7 +21,7 @@ namespace Logic {
         void setGenStrategy(std::shared_ptr<IStrategy> strategy);
         void setCorruptionStrategy(std::shared_ptr<ICorruptionStrategy> strategy);
 
-        std::string ask(const std::string& text);
+        std::string ask(const std::string &text);
         void changeWeight(int weight);
 
     private:
@@ -29,6 +29,7 @@ namespace Logic {
 
     private:
         std::mutex m_lock;
+        std::string m_name;
         PromtHistory m_history;
         std::shared_ptr<IStrategy> m_genStrategy;
         std::shared_ptr<ICorruptionStrategy> m_corruptionStrategy;

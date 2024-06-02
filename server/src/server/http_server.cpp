@@ -45,67 +45,58 @@ namespace Server {
         svr.listen("0.0.0.0", port);
     }
 
-    void HttpServer::setAuthHandler(std::function<nlh::json(ERROR_CODE &err, std::string /*name*/, int /*version*/)> handler) {
+    void HttpServer::setAuthHandler(std::function<nlh::json(ERROR_CODE &err, std::string, int)> handler) {
         svr.Post("/auth", [handler = std::move(handler)](const httplib::Request &req, httplib::Response &res) {
             auto jsonReq = nlh::json::parse(req.body);
-            if (!validateArgs(res, jsonReq, {"name", "version"})) {
+            if (!validateArgs(res, jsonReq, {"id", "version"})) {
                 return;
             }
 
-            std::string name = jsonReq["name"];
-            int version = jsonReq["version"];
-            handle(res, handler, name, version);
+            handle(res, handler, jsonReq["id"], jsonReq["version"]);
         });
     }
 
-    void HttpServer::setRegisterHandler(std::function<nlh::json(ERROR_CODE &err, std::string /*name*/, int /*version*/)> handler) {
+    void HttpServer::setRegisterHandler(std::function<nlh::json(ERROR_CODE &err, std::string, std::string, int)> handler) {
         svr.Post("/register", [handler = std::move(handler)](const httplib::Request &req, httplib::Response &res) {
             auto jsonReq = nlh::json::parse(req.body);
-            if (!validateArgs(res, jsonReq, {"name", "version"})) {
+            if (!validateArgs(res, jsonReq, {"id", "name", "version"})) {
                 return;
             }
 
-            std::string name = jsonReq["name"];
-            int version = jsonReq["version"];
-            handle(res, handler, name, version);
+            handle(res, handler, jsonReq["id"], jsonReq["name"], jsonReq["version"]);
         });
     }
 
-    void HttpServer::setSendHandler(std::function<nlh::json(ERROR_CODE &err, std::string_view, std::string_view)> handler) {
+    void HttpServer::setSendHandler(std::function<nlh::json(ERROR_CODE &err, std::string, std::string)> handler) {
         svr.Post("/send", [handler = std::move(handler)](const httplib::Request &req, httplib::Response &res) {
             auto jsonReq = nlh::json::parse(req.body);
-            if (!validateArgs(res, jsonReq, {"name", "instruction"})) {
+            if (!validateArgs(res, jsonReq, {"id", "instruction"})) {
                 return;
             }
 
-            const std::string usr = jsonReq["name"];
-            const std::string instruction = jsonReq["instruction"];
-
-            handle(res, handler, usr, instruction);
+            handle(res, handler, jsonReq["id"], jsonReq["instruction"]);
         });
     }
 
-    void HttpServer::setTuneHandler(std::function<nlh::json(ERROR_CODE &err, std::string_view /*user*/)> handler) {
+    void HttpServer::setTuneHandler(std::function<nlh::json(ERROR_CODE &err, std::string)> handler) {
         svr.Post("/tune", [handler = std::move(handler)](const httplib::Request &req, httplib::Response &res) {
             auto jsonReq = nlh::json::parse(req.body);
-            if (!validateArgs(res, jsonReq, {"name"})) {
+            if (!validateArgs(res, jsonReq, {"id"})) {
                 return;
             }
 
-            std::string name = jsonReq["name"];
-            handle(res, handler, name);
+            handle(res, handler, jsonReq["id"]);
         });
     }
 
-    void HttpServer::setBoostHandler(std::function<nlh::json(ERROR_CODE &err, std::string_view /*user*/)> handler) {
+    void HttpServer::setBoostHandler(std::function<nlh::json(ERROR_CODE &err, std::string)> handler) {
         svr.Post("/boost", [handler = std::move(handler)](const httplib::Request &req, httplib::Response &res) {
             auto jsonReq = nlh::json::parse(req.body);
-            if (!validateArgs(res, jsonReq, {"name"})) {
+            if (!validateArgs(res, jsonReq, {"id"})) {
                 return;
             }
 
-            std::string name = jsonReq["name"];
-            handle(res, handler, name);
+            handle(res, handler, jsonReq["id"]);
         });
     }
 }// namespace Server

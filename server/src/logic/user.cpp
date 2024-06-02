@@ -5,6 +5,10 @@
 #include <iostream>
 
 namespace Logic {
+    User::User(std::string name)
+        : m_name(std::move(name)) {
+    }
+
     User::User(nlh::json json) {
         if (json.contains("history")) {
             auto history = json["history"];

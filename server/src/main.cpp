@@ -22,31 +22,31 @@ int main(int argc, char *argv[]) {
 
         Logic::CoreLogic logic;
         Server::HttpServer server;
-        server.setAuthHandler([&logic](ERROR_CODE &err, std::string_view id, int version) {
+        server.setAuthHandler([&logic](ERROR_CODE &err, const std::string &id, int version) {
             err = validateVersion(version);
             if (err == ERROR_CODE::OK) {
-                err = logic.authUser(std::string{id});
+                err = logic.authUser(id);
             }
             return nlh::json();
         });
-        server.setRegisterHandler([&logic](ERROR_CODE &err, std::string_view id, int version) {
+        server.setRegisterHandler([&logic](ERROR_CODE &err, const std::string &id, const std::string &name, int version) {
             err = validateVersion(version);
             if (err == ERROR_CODE::OK) {
-                err = logic.registerUser(std::string{id});
+                err = logic.registerUser(id, name);
             }
             return nlh::json();
         });
-        server.setSendHandler([&logic](ERROR_CODE &err, std::string_view id, std::string_view instruction) {
+        server.setSendHandler([&logic](ERROR_CODE &err, const std::string &id, std::string instruction) {
             std::string response;
-            err = logic.send(std::string{id}, instruction, response);
+            err = logic.send(id, instruction, response);
             return response;
         });
-        server.setTuneHandler([&logic](ERROR_CODE &err, std::string_view id) {
-            err = logic.tune(std::string{id});
+        server.setTuneHandler([&logic](ERROR_CODE &err, const std::string &id) {
+            err = logic.tune(id);
             return nlh::json();
         });
-        server.setBoostHandler([&logic](ERROR_CODE &err, std::string_view id) {
-            err = logic.boost(std::string{id});
+        server.setBoostHandler([&logic](ERROR_CODE &err, const std::string &id) {
+            err = logic.boost(id);
             return nlh::json();
         });
 
