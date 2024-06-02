@@ -10,7 +10,7 @@
 
 void loadConfig() {
     Utils::Config::instance().load();
-    Utils::Config::instance().setVersion(1);
+    Utils::Config::instance().setVersion(2);
     Utils::Config::instance().save();
 }
 

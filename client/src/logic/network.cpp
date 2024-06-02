@@ -9,6 +9,7 @@ namespace Logic {
     Network::Network(QObject *parent)
         : QObject(parent) {
         m_network = new QNetworkAccessManager(this);
+        m_network->setTransferTimeout(std::chrono::seconds(6000));//TODO get from config
     }
 
     void Network::createPostRequest(QString pattern, const QJsonObject &body, std::function<void(QString)> handler) {
@@ -89,6 +90,7 @@ namespace Logic {
 
     void Network::registerClient(const QString &name, int version) {
         QJsonObject body;
+        body["id"] = name;
         body["name"] = name;
         body["version"] = version;
 
@@ -99,7 +101,7 @@ namespace Logic {
 
     void Network::authClient(const QString &name, int version) {
         QJsonObject body;
-        body["name"] = name;
+        body["id"] = name;
         body["version"] = version;
 
         createPostRequest("/auth", body, [this, name](const QString &) {
@@ -109,7 +111,7 @@ namespace Logic {
 
     void Network::send(const QString &name, const QString &instruction) {
         QJsonObject body;
-        body["name"] = name;
+        body["id"] = name;
         body["instruction"] = instruction;
 
         createPostRequest("/send", body, [this, name](const QString &body) {
@@ -120,18 +122,18 @@ namespace Logic {
         });
     }
 
-    void Network::tune(const QString& name) {
+    void Network::tune(const QString &name) {
         QJsonObject body;
-        body["name"] = name;
+        body["id"] = name;
 
         createPostRequest("/tune", body, [this, name](const QString &) {
             Q_EMIT gotTune();
         });
     }
 
-    void Network::boost(const QString& name) {
+    void Network::boost(const QString &name) {
         QJsonObject body;
-        body["name"] = name;
+        body["id"] = name;
 
         createPostRequest("/boost", body, [this, name](const QString &) {
             Q_EMIT gotBoost();

@@ -21,6 +21,7 @@ namespace Utils {
         std::vector<nlh::json> getUsers() const;
 
         void setUsers(const std::vector<nlh::json> &users);
+        void setVersion(int version);
 
     private:
         Config() = default;
@@ -28,5 +29,6 @@ namespace Utils {
     private:
         std::filesystem::path m_path;
         nlh::json m_cnfg;
+        int m_version{0};
     };
 }// namespace Utils

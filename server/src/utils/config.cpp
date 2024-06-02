@@ -16,7 +16,6 @@ namespace Utils {
         m_cnfg = nlh::json::parse(str);
 
         bool success = true;
-        success &= m_cnfg.contains("version");
         success &= m_cnfg.contains("ai_host");
         success &= m_cnfg.contains("ai_port");
         success &= m_cnfg.contains("ai_timeout");
@@ -35,7 +34,7 @@ namespace Utils {
     }
 
     int Config::getVersion() const {
-        return m_cnfg["version"];
+        return m_version;
     }
 
     std::string Config::getAIHost() const {
@@ -68,5 +67,9 @@ namespace Utils {
         }
 
         return m_cnfg["users"];
+    }
+
+    void Config::setVersion(int version) {
+        m_version = version;
     }
 }// namespace Utils

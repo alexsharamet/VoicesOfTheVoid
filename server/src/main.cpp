@@ -17,8 +17,13 @@ int main(int argc, char *argv[]) {
     std::srand(std::time(nullptr));
     try {
         assert(argc == 2);
+        if (argc != 2) {
+            std::cout << "Wrong args: expected call ./server config.json" << std::endl;
+            return 0;
+        }
 
         Utils::Config::instance().load(argv[1]);
+        Utils::Config::instance().setVersion(2);
 
         Logic::CoreLogic logic;
         Server::HttpServer server;
@@ -36,7 +41,7 @@ int main(int argc, char *argv[]) {
             }
             return nlh::json();
         });
-        server.setSendHandler([&logic](ERROR_CODE &err, const std::string &id, std::string instruction) {
+        server.setSendHandler([&logic](ERROR_CODE &err, const std::string &id, const std::string &instruction) {
             std::string response;
             err = logic.send(id, instruction, response);
             return response;
