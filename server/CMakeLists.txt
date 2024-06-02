@@ -6,6 +6,7 @@ set(SHARED_FOLDER ${CMAKE_SOURCE_DIR}/../shared)
 
 set(HEADERS
         ${SHARED_FOLDER}/error_codes.h
+        ${SHARED_FOLDER}/strategies.h
         inc/ext/json.h
         inc/ai_client/ai.h
         inc/server/http_server.h
@@ -14,6 +15,7 @@ set(HEADERS
         inc/logic/user.h
         inc/logic/strategy.h
         inc/logic/strategy/ai_strategy.h
+        inc/logic/strategy/echo_strategy.h
         inc/utils/config.h)
 
 set(SOURCE
@@ -22,6 +24,7 @@ set(SOURCE
         src/logic/logic.cpp
         src/logic/user.cpp
         src/logic/strategy/ai_strategy.cpp
+        src/logic/strategy/echo_strategy.cpp
         src/utils/config.cpp
         src/main.cpp)
 

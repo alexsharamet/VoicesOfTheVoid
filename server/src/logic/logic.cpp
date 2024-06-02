@@ -1,21 +1,26 @@
 #include "logic/logic.h"
 
 #include "ext/json.h"
-#include "logic/strategy.h"
 #include "logic/strategy/ai_strategy.h"
+#include "logic/strategy/echo_strategy.h"
+
+#include <strategies.h>
 
 #include <iostream>
 
 namespace Logic {
     void selectStrategy(User &user) {
-        static auto multiplier = (static_cast<int>(StrategyTypes::COUNT) - 1) / static_cast<float>(RAND_MAX);
-        auto selected = static_cast<StrategyTypes>(static_cast<int>(std::rand() * multiplier));
-        std::cout << "Selected strategy: " << static_cast<int>(selected) << std::endl;
+        static auto multiplier = (static_cast<int>(StrategyType::COUNT) - 1) / static_cast<float>(RAND_MAX);
+        auto selected = static_cast<StrategyType>(static_cast<int>(std::rand() * multiplier));
+        std::cout << "Selected strategy: " << toString(selected) << std::endl;
         switch (selected) {
-            case StrategyTypes::AI:
+            case StrategyType::AI:
                 user.setGenStrategy(std::make_shared<AIStrategy>());
                 break;
-            default:
+            case StrategyType::Echo:
+                user.setGenStrategy(std::make_shared<EchoStrategy>());
+            case StrategyType::COUNT:
+                assert(false);
                 user.setGenStrategy(std::make_shared<EchoStrategy>());
         }
     }
