@@ -2,19 +2,26 @@
 #include "ext/json.h"
 
 namespace {
-    bool validateArgs(httplib::Response &res, const nlh::json &jsonReq, const std::vector<std::string> &names) {
+    std::optional<nlh::json> validateArgs(const httplib::Request &req, httplib::Response &res, const std::vector<std::string> &names) {
         bool success = true;
-        for (const auto &name: names) {
-            success &= jsonReq.contains(name);
+        nlh::json jsonReq;
+        try {
+            jsonReq = nlh::json::parse(req.body);
+            for (const auto &name: names) {
+                success &= jsonReq.contains(name);
+            }
+        } catch (...) {
+            success = false;
         }
 
         if (!success) {
             nlh::json jsonRes;
             jsonRes["error"] = static_cast<int>(ERROR_CODE::WRONG_REQUEST_ARGS);
             res.set_content(jsonRes.dump(), "application/json");
+            return std::nullopt;
         }
 
-        return success;
+        return jsonReq;
     }
 
     template<typename T, typename... Types>
@@ -47,56 +54,46 @@ namespace Server {
 
     void HttpServer::setAuthHandler(std::function<nlh::json(ERROR_CODE &err, std::string, int)> handler) {
         svr.Post("/auth", [handler = std::move(handler)](const httplib::Request &req, httplib::Response &res) {
-            auto jsonReq = nlh::json::parse(req.body);
-            if (!validateArgs(res, jsonReq, {"id", "version"})) {
-                return;
+            if (auto jsonReq = validateArgs(req, res, {"id", "version"}); jsonReq.has_value()) {
+                auto &json = *jsonReq;
+                handle(res, handler, json["id"], json["version"]);
             }
-
-            handle(res, handler, jsonReq["id"], jsonReq["version"]);
         });
     }
 
     void HttpServer::setRegisterHandler(std::function<nlh::json(ERROR_CODE &err, std::string, std::string, int)> handler) {
         svr.Post("/register", [handler = std::move(handler)](const httplib::Request &req, httplib::Response &res) {
-            auto jsonReq = nlh::json::parse(req.body);
-            if (!validateArgs(res, jsonReq, {"id", "name", "version"})) {
-                return;
+            if (auto jsonReq = validateArgs(req, res, {"id", "name", "version"}); jsonReq.has_value()) {
+                auto &json = *jsonReq;
+                handle(res, handler, json["id"], json["name"], json["version"]);
             }
-
-            handle(res, handler, jsonReq["id"], jsonReq["name"], jsonReq["version"]);
         });
     }
 
     void HttpServer::setSendHandler(std::function<nlh::json(ERROR_CODE &err, std::string, std::string)> handler) {
         svr.Post("/send", [handler = std::move(handler)](const httplib::Request &req, httplib::Response &res) {
-            auto jsonReq = nlh::json::parse(req.body);
-            if (!validateArgs(res, jsonReq, {"id", "instruction"})) {
-                return;
+            if (auto jsonReq = validateArgs(req, res, {"id", "instruction"}); jsonReq.has_value()) {
+                auto &json = *jsonReq;
+                handle(res, handler, json["id"], json["instruction"]);
             }
-
-            handle(res, handler, jsonReq["id"], jsonReq["instruction"]);
         });
     }
 
     void HttpServer::setTuneHandler(std::function<nlh::json(ERROR_CODE &err, std::string)> handler) {
         svr.Post("/tune", [handler = std::move(handler)](const httplib::Request &req, httplib::Response &res) {
-            auto jsonReq = nlh::json::parse(req.body);
-            if (!validateArgs(res, jsonReq, {"id"})) {
-                return;
+            if (auto jsonReq = validateArgs(req, res, {"id"}); jsonReq.has_value()) {
+                auto &json = *jsonReq;
+                handle(res, handler, json["id"]);
             }
-
-            handle(res, handler, jsonReq["id"]);
         });
     }
 
     void HttpServer::setBoostHandler(std::function<nlh::json(ERROR_CODE &err, std::string)> handler) {
         svr.Post("/boost", [handler = std::move(handler)](const httplib::Request &req, httplib::Response &res) {
-            auto jsonReq = nlh::json::parse(req.body);
-            if (!validateArgs(res, jsonReq, {"id"})) {
-                return;
+            if (auto jsonReq = validateArgs(req, res, {"id"}); jsonReq.has_value()) {
+                auto &json = *jsonReq;
+                handle(res, handler, json["id"]);
             }
-
-            handle(res, handler, jsonReq["id"]);
         });
     }
 }// namespace Server
