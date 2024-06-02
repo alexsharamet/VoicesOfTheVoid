@@ -7,6 +7,8 @@
 #include "error_codes.h"
 #include "ext/json.h"
 
+#include <strategies.h>
+
 #include <memory>
 #include <string>
 #include <unordered_map>
@@ -15,10 +17,10 @@ namespace Logic {
     class CoreLogic {
     public:
         CoreLogic();
-        ERROR_CODE authUser(const std::string &id);
+        ERROR_CODE authUser(const std::string &id, StrategyType& type);
         ERROR_CODE registerUser(const std::string &id, const std::string &name);
         ERROR_CODE send(const std::string &id, const std::string &instruction, std::string &response);
-        ERROR_CODE tune(const std::string &id);
+        ERROR_CODE tune(const std::string &id, StrategyType& type);
         ERROR_CODE boost(const std::string &id);
 
         void save();

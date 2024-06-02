@@ -1,5 +1,7 @@
 #pragma once
 
+#include <strategies.h>
+
 #include <QJsonObject>
 #include <QNetworkAccessManager>
 #include <QNetworkReply>
@@ -19,10 +21,10 @@ namespace Logic {
         void gotNameIsAlreadyExist();
         void gotUserIsBusy();
 
-        void gotRegister(QString id);
-        void gotAuth(QString id);
+        void gotRegister(QString id, StrategyType type);
+        void gotAuth(QString id, StrategyType type);
         void gotSend(QString answer);
-        void gotTune();
+        void gotTune(StrategyType type);
         void gotBoost();
 
     public:

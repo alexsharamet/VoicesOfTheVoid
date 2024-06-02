@@ -20,6 +20,7 @@ namespace Logic {
         std::mutex &getLockRef();
         void setGenStrategy(std::shared_ptr<IStrategy> strategy);
         void setCorruptionStrategy(std::shared_ptr<ICorruptionStrategy> strategy);
+        StrategyType getStrategyType() const;
 
         std::string ask(const std::string &text);
         void changeWeight(int weight);

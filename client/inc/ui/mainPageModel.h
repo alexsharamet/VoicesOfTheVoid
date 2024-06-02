@@ -1,5 +1,7 @@
 #pragma once
 
+#include <strategies.h>
+
 #include <QObject>
 #include <QPointer>
 #include <QString>
@@ -23,7 +25,7 @@ namespace UI {
 
     Q_SIGNALS:
         void gotMessage(QString);
-        void gotTune();
+        void gotTune(QString);
         void gotBoost();
 
     public:
@@ -40,10 +42,10 @@ namespace UI {
         void authUser(const QString &name);
 
     private:
-        void onAuth(QString name);
-        void onRegister(QString name);
+        void onAuth(QString name, StrategyType type);
+        void onRegister(QString name, StrategyType type);
         void onSend(QString answer);
-        void onTune();
+        void onTune(StrategyType type);
         void onBoost();
 
     private://NETWORK errors

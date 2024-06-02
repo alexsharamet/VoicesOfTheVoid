@@ -6,7 +6,7 @@ enum class StrategyType {
     AI, Echo, COUNT
 };
 
-std::string toString(StrategyType type) {
+inline std::string toString(StrategyType type) {
     switch (type) {
         case StrategyType::AI:
             return "AI";

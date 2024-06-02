@@ -42,7 +42,6 @@ namespace UI {
         connect(m_network.get(), &Logic::Network::gotSend, this, &UI::MainPageModel::onSend);
         connect(m_network.get(), &Logic::Network::gotTune, this, &UI::MainPageModel::onTune);
         connect(m_network.get(), &Logic::Network::gotBoost, this, &UI::MainPageModel::onBoost);
-
     }
 
     void MainPageModel::auth() {
@@ -152,19 +151,22 @@ namespace UI {
         m_currentAction = Action::None;
     }
 
-    void MainPageModel::onAuth(QString name) {
+    void MainPageModel::onAuth(QString name, StrategyType type) {
         m_id = std::move(name);
         m_currentAction = Action::None;
         qDebug() << "auth successful";
+        Q_EMIT gotTune(QString::fromStdString(toString(type)));
     }
 
-    void MainPageModel::onRegister(QString name) {
+    void MainPageModel::onRegister(QString name, StrategyType type) {
         m_id = std::move(name);
         Utils::Config::instance().setId(m_id);
         Utils::Config::instance().save();
 
         m_currentAction = Action::None;
         qDebug() << "register successful";
+
+        Q_EMIT gotTune(QString::fromStdString(toString(type)));
     }
 
     void MainPageModel::onSend(QString answer) {
@@ -172,9 +174,9 @@ namespace UI {
         Q_EMIT gotMessage(std::move(answer));
     }
 
-    void MainPageModel::onTune() {
+    void MainPageModel::onTune(StrategyType type) {
         m_currentAction = Action::None;
-        Q_EMIT gotTune();
+        Q_EMIT gotTune(QString::fromStdString(toString(type)));
     }
 
     void MainPageModel::onBoost() {

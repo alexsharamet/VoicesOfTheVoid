@@ -18,9 +18,9 @@ namespace UI {
             Q_EMIT inputChanged();
             Q_EMIT changeSpinnerState(false);
         });
-        connect(model, &UI::MainPageModel::gotTune, this, [this] {
-            m_input = "Tune";
-            Q_EMIT inputChanged();
+        connect(model, &UI::MainPageModel::gotTune, this, [this](QString strategy) {
+            m_strategy = strategy;
+            Q_EMIT strategyChanged();
             Q_EMIT changeSpinnerState(false);
         });
         connect(model, &UI::MainPageModel::gotBoost, this, [this] {
@@ -32,6 +32,10 @@ namespace UI {
 
     QString MainPageViewModel::input() const {
         return m_input;
+    }
+
+    QString MainPageViewModel::strategy() const {
+        return m_strategy;
     }
 
     void MainPageViewModel::setMessage(const QString &text) {

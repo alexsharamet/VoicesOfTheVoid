@@ -10,13 +10,16 @@ namespace UI {
     class MainPageViewModel : public QObject {
         Q_OBJECT
         Q_PROPERTY(QString input READ input NOTIFY inputChanged)
+        Q_PROPERTY(QString strategy READ strategy NOTIFY strategyChanged)
 
     Q_SIGNALS:
         void inputChanged();
+        void strategyChanged();
         void changeSpinnerState(bool running);
 
     public://QML_CALL
         [[nodiscard]] QString input() const;
+        [[nodiscard]] QString strategy() const;
         Q_INVOKABLE void setMessage(const QString &text);
         Q_INVOKABLE void tuneButtonCicked();
         Q_INVOKABLE void boostButtonClicked();
@@ -27,6 +30,7 @@ namespace UI {
 
     private:
         QString m_input;
+        QString m_strategy;
 
         MainPageModel *m_model{nullptr};
     };

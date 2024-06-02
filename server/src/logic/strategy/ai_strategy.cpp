@@ -65,4 +65,8 @@ namespace Logic {
         auto response = m_ai->sendPromtSync(promt);
         return response;
     }
+
+    StrategyType AIStrategy::getType() const {
+        return StrategyType::AI;
+    }
 }// namespace Logic

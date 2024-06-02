@@ -28,18 +28,28 @@ int main(int argc, char *argv[]) {
         Logic::CoreLogic logic;
         Server::HttpServer server;
         server.setAuthHandler([&logic](ERROR_CODE &err, const std::string &id, int version) {
+            nlh::json res;
             err = validateVersion(version);
             if (err == ERROR_CODE::OK) {
-                err = logic.authUser(id);
+                StrategyType type;
+                err = logic.authUser(id, type);
+                res["strategy"] = static_cast<int>(type);
             }
-            return nlh::json();
+            return res;
         });
         server.setRegisterHandler([&logic](ERROR_CODE &err, const std::string &id, const std::string &name, int version) {
+            nlh::json res;
             err = validateVersion(version);
             if (err == ERROR_CODE::OK) {
                 err = logic.registerUser(id, name);
             }
-            return nlh::json();
+            if (err == ERROR_CODE::OK) {
+                StrategyType type;
+                err = logic.tune(id, type);
+                res["strategy"] = static_cast<int>(type);
+            }
+
+            return res;
         });
         server.setSendHandler([&logic](ERROR_CODE &err, const std::string &id, const std::string &instruction) {
             std::string response;
@@ -47,8 +57,11 @@ int main(int argc, char *argv[]) {
             return response;
         });
         server.setTuneHandler([&logic](ERROR_CODE &err, const std::string &id) {
-            err = logic.tune(id);
-            return nlh::json();
+            nlh::json res;
+            StrategyType type;
+            err = logic.tune(id, type);
+            res["strategy"] = static_cast<int>(type);
+            return res;
         });
         server.setBoostHandler([&logic](ERROR_CODE &err, const std::string &id) {
             err = logic.boost(id);

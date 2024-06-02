@@ -94,8 +94,11 @@ namespace Logic {
         body["name"] = name;
         body["version"] = version;
 
-        createPostRequest("/register", body, [this, name](const QString &) {
-            Q_EMIT gotRegister(name);
+        createPostRequest("/register", body, [this, name](const QString &body) {
+            auto obj = QJsonDocument::fromJson(body.toUtf8()).object();
+            auto res = obj["response"].toObject();
+            auto strategy = res["strategy"].toInt();
+            Q_EMIT gotRegister(name, static_cast<StrategyType>(strategy));
         });
     }
 
@@ -104,8 +107,11 @@ namespace Logic {
         body["id"] = name;
         body["version"] = version;
 
-        createPostRequest("/auth", body, [this, name](const QString &) {
-            Q_EMIT gotAuth(name);
+        createPostRequest("/auth", body, [this, name](const QString &body) {
+            auto obj = QJsonDocument::fromJson(body.toUtf8()).object();
+            auto res = obj["response"].toObject();
+            auto strategy = res["strategy"].toInt();
+            Q_EMIT gotAuth(name, static_cast<StrategyType>(strategy));
         });
     }
 
@@ -126,8 +132,11 @@ namespace Logic {
         QJsonObject body;
         body["id"] = name;
 
-        createPostRequest("/tune", body, [this, name](const QString &) {
-            Q_EMIT gotTune();
+        createPostRequest("/tune", body, [this, name](const QString &body) {
+            auto obj = QJsonDocument::fromJson(body.toUtf8()).object();
+            auto res = obj["response"].toObject();
+            auto strategy = res["strategy"].toInt();
+            Q_EMIT gotTune(static_cast<StrategyType>(strategy));
         });
     }
 

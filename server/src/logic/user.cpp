@@ -36,6 +36,10 @@ namespace Logic {
         m_corruptionStrategy = std::move(strategy);
     }
 
+    StrategyType User::getStrategyType() const {
+        return m_genStrategy->getType();
+    }
+
     void User::addPromt(Promt promt) {
         m_history.push_back(std::move(promt));
         if (m_history.size() > Utils::Config::instance().getHistorySize()) {

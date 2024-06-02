@@ -11,4 +11,8 @@ namespace Logic {
 
     void EchoStrategy::changeWeight(int) {
     }
+
+    StrategyType EchoStrategy::getType() const {
+        return StrategyType::Echo;
+    }
 }// namespace Logic

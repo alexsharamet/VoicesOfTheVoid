@@ -13,6 +13,7 @@ find_package(Qt6Qml REQUIRED)
 
 set(HEADERS
         ${SHARED_FOLDER}/error_codes.h
+        ${SHARED_FOLDER}/strategies.h
         inc/ui/mainPageViewModel.h
         inc/ui/mainPageModel.h
         inc/utils/config.h

@@ -9,20 +9,9 @@
 #include <iostream>
 
 namespace Logic {
-    void selectStrategy(User &user) {
+    StrategyType selectStrategy() {
         static auto multiplier = (static_cast<int>(StrategyType::COUNT) - 1) / static_cast<float>(RAND_MAX);
-        auto selected = static_cast<StrategyType>(static_cast<int>(std::rand() * multiplier));
-        std::cout << "Selected strategy: " << toString(selected) << std::endl;
-        switch (selected) {
-            case StrategyType::AI:
-                user.setGenStrategy(std::make_shared<AIStrategy>());
-                break;
-            case StrategyType::Echo:
-                user.setGenStrategy(std::make_shared<EchoStrategy>());
-            case StrategyType::COUNT:
-                assert(false);
-                user.setGenStrategy(std::make_shared<EchoStrategy>());
-        }
+        return static_cast<StrategyType>(static_cast<int>(std::rand() * multiplier));
     }
 
     CoreLogic::CoreLogic() {
@@ -56,12 +45,14 @@ namespace Logic {
         return it->second;
     }
 
-    ERROR_CODE CoreLogic::authUser(const std::string &id) {
+    ERROR_CODE CoreLogic::authUser(const std::string &id, StrategyType &type) {
         std::lock_guard lock{m_usersLock};
-        if (m_users.find(id) == m_users.end()) {
+        auto it = m_users.find(id);
+        if (it == m_users.end()) {
             return ERROR_CODE::USER_IS_NOT_EXIST;
         }
 
+        type = it->second->getStrategyType();
         return ERROR_CODE::OK;
     }
 
@@ -74,7 +65,6 @@ namespace Logic {
 
         auto user = std::make_shared<User>(name);
         user->setCorruptionStrategy(std::make_shared<EchoStrategy>());
-        selectStrategy(*user);
         m_users.emplace(id, user);
         return ERROR_CODE::OK;
     }
@@ -95,7 +85,7 @@ namespace Logic {
         return ERROR_CODE::OK;
     }
 
-    ERROR_CODE CoreLogic::tune(const std::string &id) {
+    ERROR_CODE CoreLogic::tune(const std::string &id, StrategyType &type) {
         std::shared_ptr<User> user = getUser(id);
         if (!user) {
             return ERROR_CODE::USER_IS_NOT_EXIST;
@@ -106,7 +96,18 @@ namespace Logic {
             return ERROR_CODE::USER_IS_BUSY;
         }
 
-        selectStrategy(*user);
+        type = selectStrategy();
+
+        switch (type) {
+            case StrategyType::AI:
+                user->setGenStrategy(std::make_shared<AIStrategy>());
+                break;
+            case StrategyType::Echo:
+                user->setGenStrategy(std::make_shared<EchoStrategy>());
+            case StrategyType::COUNT:
+                assert(false);
+                user->setGenStrategy(std::make_shared<EchoStrategy>());
+        }
 
         return ERROR_CODE::OK;
     }

@@ -31,6 +31,14 @@ Page {
 		id: main_window
 		anchors.fill : parent
 
+		Label {
+		    anchors.left: parent.left
+		    anchors.leftMargin: 20
+            anchors.top: parent.top
+            anchors.topMargin: 20
+            text: mainPageViewModel.strategy
+		}
+
 		TextField {
 			id: input_dialog
 			width: parent.width * 0.8
