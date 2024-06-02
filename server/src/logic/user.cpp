@@ -6,7 +6,7 @@
 
 namespace Logic {
     User::User(nlh::json json) {
-        /*if (json.contains("history")) {
+        if (json.contains("history")) {
             auto history = json["history"];
             for (const auto &item: history) {
                 bool success = true;
@@ -17,7 +17,7 @@ namespace Logic {
                     m_history.push_back(std::make_pair<std::string, std::string>(item["instruction"], item["response"]));
                 }
             }
-        }*/
+        }
     }
 
     std::mutex &User::getLockRef() {
@@ -52,14 +52,14 @@ namespace Logic {
 
     nlh::json User::toJson() const {
         nlh::json res;
-        /*std::vector<nlh::json> history;
+        std::vector<nlh::json> history;
         for (const auto &promt: m_history) {
             nlh::json item;
             item["instruction"] = promt.first;
             item["response"] = promt.second;
             history.push_back(std::move(item));
         }
-        res["history"] = history;*/
+        res["history"] = history;
         return res;
     }
 }// namespace Logic
