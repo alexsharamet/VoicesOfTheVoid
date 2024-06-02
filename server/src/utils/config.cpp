@@ -19,6 +19,7 @@ namespace Utils {
         success &= m_cnfg.contains("version");
         success &= m_cnfg.contains("ai_host");
         success &= m_cnfg.contains("ai_port");
+        success &= m_cnfg.contains("ai_timeout");
         success &= m_cnfg.contains("port");
         success &= m_cnfg.contains("history_size");
 
@@ -43,6 +44,10 @@ namespace Utils {
 
     int Config::getAIPort() const {
         return m_cnfg["ai_port"];
+    }
+
+    int Config::getAITimeout() const {
+        return m_cnfg["ai_timeout"];
     }
 
     int Config::getHistorySize() const {

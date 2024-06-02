@@ -15,11 +15,12 @@ namespace Utils {
         int getVersion() const;
         std::string getAIHost() const;
         int getAIPort() const;
+        int getAITimeout() const;
         int getHistorySize() const;
         int getPort() const;
         std::vector<nlh::json> getUsers() const;
 
-        void setUsers(const std::vector<nlh::json>& users);
+        void setUsers(const std::vector<nlh::json> &users);
 
     private:
         Config() = default;

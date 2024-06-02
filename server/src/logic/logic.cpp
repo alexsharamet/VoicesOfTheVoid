@@ -9,10 +9,9 @@
 namespace Logic {
     CoreLogic::CoreLogic() {
         auto &config = Utils::Config::instance();
-        m_ai = std::make_shared<AI::AI>();
-
-        m_ai->setHost(config.getAIHost());
-        m_ai->setPort(config.getAIPort());
+        m_ai = std::make_shared<AI::AI>(config.getAIHost(),
+                                        config.getAIPort(),
+                                        config.getAITimeout());
 
         auto users = config.getUsers();
         for (const auto &user: users) {

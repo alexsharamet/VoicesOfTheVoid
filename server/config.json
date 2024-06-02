@@ -2,6 +2,7 @@
     "version" : 1,
     "ai_host": "85.209.195.109",
     "ai_port": 5001,
+    "ai_timeout" : 300,
     "history_size": 10,
     "port": 8080,
     "users": []
