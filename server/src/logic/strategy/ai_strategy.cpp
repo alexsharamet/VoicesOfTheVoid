@@ -42,23 +42,19 @@ namespace {
 }// namespace
 
 namespace Logic {
-    AIStrategy::AIStrategy(std::shared_ptr<AI::AI> ai)
-        : m_ai(std::move(ai)) {
+    AIStrategy::AIStrategy() {
+        const auto &config = Utils::Config::instance();
+        m_ai = std::make_shared<AI::AI>(config.getAIHost(),
+                                        config.getAIPort(),
+                                        config.getAITimeout());
     }
 
-    void AIStrategy::addPromt(Promt promt) {
-        m_history.push_back(std::move(promt));
-        if (m_history.size() > Utils::Config::instance().getHistorySize()) {
-            m_history.pop_front();
-        }
-    }
-
-    std::string AIStrategy::ask(std::string instruction) {
+    std::string AIStrategy::ask(const PromtHistory &history, std::string instruction) {
         static nlh::json BASE_PROMT = createPromt();
         nlh::json json(BASE_PROMT);
 
         std::string promtString;
-        for (const auto &promt: m_history) {
+        for (const auto &promt: history) {
             promtString += fmt::format("### Instruction:\n{}\n### Response:\n{}\n", promt.first, promt.second);
         }
 
@@ -67,7 +63,6 @@ namespace Logic {
 
         const auto promt = json.dump();
         auto response = m_ai->sendPromtSync(promt);
-        addPromt({instruction, response});
         return response;
     }
 }// namespace Logic

@@ -5,8 +5,8 @@
 #include "promt.h"
 
 #include <deque>
-#include <string>
 #include <mutex>
+#include <string>
 
 namespace Logic {
     using UserKey = std::string;
@@ -25,7 +25,11 @@ namespace Logic {
         void changeWeight(int weight);
 
     private:
+        void addPromt(Promt promt);
+
+    private:
         std::mutex m_lock;
+        PromtHistory m_history;
         std::shared_ptr<IStrategy> m_genStrategy;
         std::shared_ptr<ICorruptionStrategy> m_corruptionStrategy;
     };

@@ -9,10 +9,6 @@
 namespace Logic {
     CoreLogic::CoreLogic() {
         auto &config = Utils::Config::instance();
-        m_ai = std::make_shared<AI::AI>(config.getAIHost(),
-                                        config.getAIPort(),
-                                        config.getAITimeout());
-
         auto users = config.getUsers();
         for (const auto &user: users) {
             if (user.contains("name")) {
@@ -94,7 +90,7 @@ namespace Logic {
             return ERROR_CODE::USER_IS_BUSY;
         }
 
-        user->setGenStrategy(std::make_shared<AIStrategy>(m_ai));
+        user->setGenStrategy(std::make_shared<AIStrategy>());
 
         return ERROR_CODE::OK;
     }

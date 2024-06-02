@@ -27,8 +27,6 @@ namespace Logic {
         std::shared_ptr<User> getUser(UserKey);
 
     private:
-        std::shared_ptr<AI::AI> m_ai;//TODO: shared resource fix data race
-
         std::mutex m_usersLock;
         std::unordered_map<UserKey, std::shared_ptr<User>> m_users;
     };

@@ -32,8 +32,18 @@ namespace Logic {
         m_corruptionStrategy = std::move(strategy);
     }
 
-    std::string User::ask(std::string text) {
-        return m_corruptionStrategy->ask(m_genStrategy->ask(std::move(text)));
+    void User::addPromt(Promt promt) {
+        m_history.push_back(std::move(promt));
+        if (m_history.size() > Utils::Config::instance().getHistorySize()) {
+            m_history.pop_front();
+        }
+    }
+
+    std::string User::ask(std::string instruction) {
+        auto response = m_corruptionStrategy->corrupt(m_genStrategy->ask(m_history, std::move(instruction)));
+        addPromt({instruction, response});
+
+        return response;
     }
 
     void User::changeWeight(int weight) {
