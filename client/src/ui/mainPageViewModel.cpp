@@ -19,7 +19,7 @@ namespace UI {
             Q_EMIT changeSpinnerState(false);
         });
         connect(model, &UI::MainPageModel::gotTune, this, [this](QString strategy) {
-            m_strategy = strategy;
+            m_strategy = std::move(strategy);
             Q_EMIT strategyChanged();
             Q_EMIT changeSpinnerState(false);
         });

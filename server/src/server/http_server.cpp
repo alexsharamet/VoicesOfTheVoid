@@ -1,6 +1,8 @@
 #include "server/http_server.h"
 #include "ext/json.h"
 
+#include <optional>
+
 namespace {
     std::optional<nlh::json> validateArgs(const httplib::Request &req, httplib::Response &res, const std::vector<std::string> &names) {
         bool success = true;
