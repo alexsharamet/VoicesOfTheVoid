@@ -28,7 +28,7 @@ Page {
 	}
 
 	Item {
-		id: main_window
+		id: mainWindow
 		anchors.fill : parent
 
 		Label {
@@ -40,7 +40,7 @@ Page {
 		}
 
 		TextField {
-			id: input_dialog
+			id: inputDialog
 			width: parent.width * 0.8
 			height: parent.height * 0.3
 			anchors.left: parent.left
@@ -60,11 +60,11 @@ Page {
 		}		
 
 		TextField {
-			id: output_dialog
+			id: outputDialog
 			width: parent.width * 0.8
 			height: parent.height * 0.2
-			anchors.left: input_dialog.left
-			anchors.top: input_dialog.bottom
+			anchors.left: inputDialog.left
+			anchors.top: inputDialog.bottom
 			anchors.topMargin: 50
 
             background: Rectangle {
@@ -77,24 +77,24 @@ Page {
 		}
 		
 		Button {
-			id: send_button
+			id: sendButton
 			width: 200
 			height: 50
-			anchors.right: output_dialog.right
-			anchors.top: output_dialog.bottom
+			anchors.right: outputDialog.right
+			anchors.top: outputDialog.bottom
 			anchors.topMargin: 50
 			text: "Send"
 			onClicked: {
-				mainPageViewModel.setMessage(output_dialog.text)
+				mainPageViewModel.setMessage(outputDialog.text)
 			}
 		}
 
 		Button {
-            id: tune_button
+            id: tuneButton
             width: 200
             height: 50
-            anchors.left: output_dialog.left
-            anchors.top: output_dialog.bottom
+            anchors.left: outputDialog.left
+            anchors.top: outputDialog.bottom
             anchors.topMargin: 50
             text: "Tune"
             onClicked: {
@@ -103,11 +103,11 @@ Page {
         }
 
         Button {
-            id: boost_button
+            id: boostButton
             width: 200
             height: 50
-            anchors.left: tune_button.right
-            anchors.top: output_dialog.bottom
+            anchors.left: tuneButton.right
+            anchors.top: outputDialog.bottom
             anchors.leftMargin: 50
             anchors.topMargin: 50
             text: "Boost"
