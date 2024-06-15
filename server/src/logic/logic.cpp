@@ -2,6 +2,7 @@
 
 #include "ext/json.h"
 #include "logic/strategy/ai_strategy.h"
+#include "logic/strategy/core_corrupt_stategy.h"
 #include "logic/strategy/echo_strategy.h"
 #include "utils/random.h"
 
@@ -68,7 +69,7 @@ namespace Logic {
         }
 
         auto user = std::make_shared<User>(name);
-        user->setCorruptionStrategy(std::make_shared<EchoStrategy>());
+        user->setCorruptionStrategy(std::make_shared<CoreCorruptStrategy>());
         m_users.emplace(id, user);
         return ERROR_CODE::OK;
     }
