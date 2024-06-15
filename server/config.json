@@ -1,5 +1,5 @@
 {
-    "ai_host": "85.209.195.109",
+    "ai_host": "5.180.174.237",
     "ai_port": 5001,
     "ai_timeout" : 300,
     "history_size": 10,

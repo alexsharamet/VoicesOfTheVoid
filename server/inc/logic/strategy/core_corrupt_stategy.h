@@ -9,6 +9,6 @@ namespace Logic {
         void changeWeight(int weight) override;
 
     private:
-        int m_weight;
+        int m_weight{100};
     };
 }// namespace Logic

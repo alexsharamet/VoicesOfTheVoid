@@ -55,7 +55,9 @@ namespace Logic {
     }
 
     void User::changeWeight() {
-        m_corruptionWeight -= 20;
+        if (m_corruptionWeight > 0) {
+            m_corruptionWeight -= 20;
+        }
         m_corruptionStrategy->changeWeight(m_corruptionWeight);
     }
 

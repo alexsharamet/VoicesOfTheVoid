@@ -132,7 +132,7 @@ namespace Logic {
         auto data = split(input, " ");
         std::string res;
         for (auto text: data) {
-            if (Utils::isHappened(100 - m_weight)) {
+            if (Utils::isHappened(m_weight)) {
                 text = encode(text);
             }
             res += text + " ";

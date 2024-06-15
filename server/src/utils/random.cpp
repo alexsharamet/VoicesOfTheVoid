@@ -11,7 +11,12 @@ namespace Utils {
     }
 
     bool isHappened(int possibility /*1-100*/) {
-        assert(possibility >= 1 && possibility <= 100);
+        if (possibility < 1) {
+            possibility = 1;
+        }
+        if (possibility > 100) {
+            possibility = 100;
+        }
         auto value = random(1, 100);
         return value <= possibility;
     }
