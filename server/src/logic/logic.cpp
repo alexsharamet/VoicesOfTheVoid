@@ -3,6 +3,7 @@
 #include "ext/json.h"
 #include "logic/strategy/ai_strategy.h"
 #include "logic/strategy/echo_strategy.h"
+#include "utils/random.h"
 
 #include <strategies.h>
 
@@ -10,8 +11,11 @@
 
 namespace Logic {
     StrategyType selectStrategy() {
-        static auto multiplier = (static_cast<int>(StrategyType::COUNT) - 1) / static_cast<float>(RAND_MAX);
-        return static_cast<StrategyType>(static_cast<int>(std::rand() * multiplier));
+        if (Utils::isHappened(10)) {
+            return StrategyType::AI;
+        }
+
+        return StrategyType::Echo;
     }
 
     CoreLogic::CoreLogic() {
@@ -104,10 +108,10 @@ namespace Logic {
                 break;
             case StrategyType::Echo:
                 user->setGenStrategy(std::make_shared<EchoStrategy>());
-            case StrategyType::COUNT:
-                assert(false);
-                user->setGenStrategy(std::make_shared<EchoStrategy>());
+                break;
         }
+
+        user->clearWeight();
 
         return ERROR_CODE::OK;
     }
@@ -123,7 +127,7 @@ namespace Logic {
             return ERROR_CODE::USER_IS_BUSY;
         }
 
-        user->changeWeight(10);//TODO some logic
+        user->changeWeight();
 
         return ERROR_CODE::OK;
     }

@@ -3,7 +3,7 @@
 #include <string>
 
 enum class StrategyType {
-    AI, Echo, COUNT
+    AI, Echo
 };
 
 inline std::string toString(StrategyType type) {
@@ -12,8 +12,6 @@ inline std::string toString(StrategyType type) {
             return "AI";
         case StrategyType::Echo:
             return "Echo";
-        case StrategyType::COUNT:
-            return "INVALID";
     }
 
     return "UNKNOWN";

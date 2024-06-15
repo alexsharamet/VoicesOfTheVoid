@@ -16,7 +16,9 @@ set(HEADERS
         inc/logic/strategy.h
         inc/logic/strategy/ai_strategy.h
         inc/logic/strategy/echo_strategy.h
-        inc/utils/config.h)
+        inc/logic/strategy/core_corrupt_stategy.h
+        inc/utils/config.h
+        inc/utils/random.h)
 
 set(SOURCE
         src/ai_client/ai.cpp
@@ -25,7 +27,9 @@ set(SOURCE
         src/logic/user.cpp
         src/logic/strategy/ai_strategy.cpp
         src/logic/strategy/echo_strategy.cpp
+        src/logic/strategy/core_corrupt_strategy.cpp
         src/utils/config.cpp
+        src/utils/random.cpp
         src/main.cpp)
 
 add_executable(${PROJECT_NAME}
@@ -37,12 +41,10 @@ target_include_directories(${PROJECT_NAME}
         PRIVATE ${SHARED_FOLDER})
 
 find_package(nlohmann_json REQUIRED)
-find_package(CURL REQUIRED)
 find_package(httplib REQUIRED)
 find_package(fmt REQUIRED)
 
 target_link_libraries(${PROJECT_NAME}
-        PRIVATE CURL::libcurl
         PRIVATE nlohmann_json::nlohmann_json
         PRIVATE httplib::httplib
         PRIVATE fmt::fmt)

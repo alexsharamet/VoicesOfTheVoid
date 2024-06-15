@@ -54,8 +54,13 @@ namespace Logic {
         return response;
     }
 
-    void User::changeWeight(int weight) {
-        m_corruptionStrategy->changeWeight(weight);
+    void User::changeWeight() {
+        m_corruptionWeight -= 20;
+        m_corruptionStrategy->changeWeight(m_corruptionWeight);
+    }
+
+    void User::clearWeight() {
+        m_corruptionWeight = 100;
     }
 
     nlh::json User::toJson() const {

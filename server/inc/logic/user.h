@@ -20,10 +20,11 @@ namespace Logic {
         std::mutex &getLockRef();
         void setGenStrategy(std::shared_ptr<IStrategy> strategy);
         void setCorruptionStrategy(std::shared_ptr<ICorruptionStrategy> strategy);
-        StrategyType getStrategyType() const;
+        [[nodiscard]] StrategyType getStrategyType() const;
 
         std::string ask(const std::string &text);
-        void changeWeight(int weight);
+        void changeWeight();
+        void clearWeight();
 
     private:
         void addPromt(Promt promt);
@@ -34,5 +35,6 @@ namespace Logic {
         PromtHistory m_history;
         std::shared_ptr<IStrategy> m_genStrategy;
         std::shared_ptr<ICorruptionStrategy> m_corruptionStrategy;
+        int m_corruptionWeight{100};
     };
 }// namespace Logic
