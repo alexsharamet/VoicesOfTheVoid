@@ -39,7 +39,7 @@ Page {
             text: mainPageViewModel.strategy
 		}
 
-		TextField {
+		TextArea {
 			id: inputDialog
 			width: parent.width * 0.8
 			height: parent.height * 0.3
@@ -59,7 +59,7 @@ Page {
 			readOnly: true
 		}		
 
-		TextField {
+		TextArea {
 			id: outputDialog
 			width: parent.width * 0.8
 			height: parent.height * 0.2

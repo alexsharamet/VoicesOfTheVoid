@@ -94,10 +94,10 @@ namespace {
                            });
 
         //3. Для каждой буквы: каждая буква заменяется на букву смещенную на случайное число от 0 до 10 позиций в алфавите.
-        text = replaceText(
+        /*text = replaceText(
                 text,
                 [](char c) { return !isSpecialSymbol(c); },
-                [](char c) { return shiftChar(c, Utils::random(0, 10)); });
+                [](char c) { return shiftChar(c, Utils::random(0, 10)); });*/
         //4. каждый символ имеет вероятность 30% быть замененной на специальный символ.
         text = replaceText(
                 text,
