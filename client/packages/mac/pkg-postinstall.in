@@ -1,0 +1,39 @@
+#!/usr/bin/env bash
+
+APP="$2/@MAIN_BUNDLE_NAME@"
+
+if [[ $USER == root ]] ; then
+    USER=$(stat -f "%Su" ~)
+fi
+
+chown -R $USER "$APP"
+
+USER_ID=$(id -u $USER)
+
+echo "Start postinstall from user: $USER"
+
+function waitInstallerClose {
+    retryCount=0
+    while true ; do
+        installer_uid=$(ps -ef -o pid -o command | grep "/System/Library/CoreServices/Installer.app" | while read item
+        do
+          echo "$item"
+        done | grep "MacOS" | cut -d " " -f 1)
+
+        if [[ $installer_uid == $USER_ID ]]; then
+            sleep 1
+            retryCount=$((retryCount+1))
+            if [[ $retryCount -gt 10 ]] ; then
+                sudo -u "$USER" open "$APP"&
+                exit 0
+            fi
+        else
+            sudo -u "$USER" open "$APP"&
+            exit 0
+        fi
+    done
+}
+
+echo "Waiting for the installer to close..."
+waitInstallerClose&
+exit 0

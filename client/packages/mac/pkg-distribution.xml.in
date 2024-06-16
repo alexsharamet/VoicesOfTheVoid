@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<installer-gui-script minSpecVersion="2">
+    <pkg-ref id="@MAIN_APPLE_APP_ID@">
+        <bundle-version>
+            <bundle CFBundleShortVersionString="@MAIN_VERSION_STRING@" CFBundleVersion="@PATCH_VERSION@" id="@MAIN_APPLE_APP_ID@" path="@MAIN_BUNDLE_NAME@"/>
+        </bundle-version>
+    </pkg-ref>
+    <product id="@MAIN_APPLE_APP_ID@" version="@MAIN_VERSION_STRING@"/>
+    <title>@MAIN_PROJECT_NAME@</title>
+    <options customize="never" require-scripts="false" hostArchitectures="x86_64"/>
+    <volume-check>
+        <allowed-os-versions>
+            <os-version min="@CMAKE_OSX_DEPLOYMENT_TARGET@"/>
+        </allowed-os-versions>
+    </volume-check>
+    <choices-outline>
+        <line choice="default">
+            <line choice="@MAIN_APPLE_APP_ID@"/>
+        </line>
+    </choices-outline>
+    <choice id="default" title="@MAIN_PROJECT_NAME@" versStr="@MAIN_VERSION_STRING@"/>
+    <choice id="@MAIN_APPLE_APP_ID@" title="@MAIN_PROJECT_NAME@" visible="false" customLocation="/Applications">
+        <pkg-ref id="@MAIN_APPLE_APP_ID@"/>
+    </choice>
+    <pkg-ref id="@MAIN_APPLE_APP_ID@" version="@MAIN_VERSION_STRING@" onConclusion="none">@MAIN_PACKAGE_NAME@.pkg</pkg-ref>
+</installer-gui-script>

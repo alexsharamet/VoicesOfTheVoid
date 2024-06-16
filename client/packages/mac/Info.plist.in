@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>BuildMachineOSBuild</key>
+	<string>18C54</string>
+	<key>CFBundleDisplayName</key>
+	<string>@MAIN_PROJECT_NAME@</string>
+	<key>CFBundleDocumentTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleTypeExtensions</key>
+			<array>
+				<string>*</string>
+			</array>
+			<key>CFBundleTypeIconFile</key>
+			<string>icons-bundle</string>
+			<key>CFBundleTypeMIMETypes</key>
+			<array>
+				<string>public.data</string>
+			</array>
+			<key>CFBundleTypeName</key>
+			<string>@MAIN_PROJECT_NAME@</string>
+			<key>CFBundleTypeRole</key>
+			<string>Viewer</string>
+			<key>LSHandlerRank</key>
+			<string>Default</string>
+		</dict>
+	</array>
+    <key>CFBundleDevelopmentRegion</key>
+    <string>Russian</string>
+	<key>CFBundleExecutable</key>
+	<string>@MAIN_PROJECT_NAME@</string>
+	<key>CFBundleIconFile</key>
+	<string>icons-bundle</string>
+	<key>CFBundleIdentifier</key>
+	<string>@MAIN_APPLE_APP_ID@</string>
+	<key>CFBundleInfoDictionaryVersion</key>
+	<string>6.0</string>
+	<key>CFBundleName</key>
+	<string>@MAIN_PROJECT_NAME@</string>
+	<key>CFBundlePackageType</key>
+	<string>APPL</string>
+	<key>CFBundleShortVersionString</key>
+	<string>@MAIN_VERSION_STRING@</string>
+	<key>CFBundleSignature</key>
+	<string>????</string>
+	<key>CFBundleURLTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>Viewer</string>
+			<key>CFBundleURLIconFile</key>
+			<string>icons-bundle</string>
+			<key>CFBundleURLName</key>
+			<string>@MAIN_PROJECT_NAME@</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>@PROJECT_URL_SCHEME1@</string>
+				<string>@PROJECT_URL_SCHEME2@</string>
+				<string>@PROJECT_URL_SCHEME3@</string>
+			</array>
+		</dict>
+	</array>
+	<key>CFBundleVersion</key>
+	<string>@PATCH_VERSION@</string>
+	<key>DTCompiler</key>
+	<string>com.apple.compilers.llvm.clang.1_0</string>
+	<key>DTPlatformBuild</key>
+	<string>10B61</string>
+	<key>DTPlatformVersion</key>
+	<string>GM</string>
+	<key>DTSDKBuild</key>
+	<string>18B71</string>
+	<key>DTSDKName</key>
+	<string>macosx@CMAKE_OSX_DEPLOYMENT_TARGET@</string>
+	<key>DTXcode</key>
+	<string>1010</string>
+	<key>DTXcodeBuild</key>
+	<string>10B61</string>
+	<key>LSApplicationCategoryType</key>
+	<string>public.app-category.social-networking</string>
+	<key>LSFileQuarantineEnabled</key>
+	<true/>
+	<key>LSHasLocalizedDisplayName</key>
+	<true/>
+	<key>LSMinimumSystemVersion</key>
+	<string>@CMAKE_OSX_DEPLOYMENT_TARGET@</string>
+	<key>NSAppTransportSecurity</key>
+	<dict>
+		<key>NSAllowsArbitraryLoads</key>
+		<true/>
+	</dict>
+	<key>NSAppleEventsUsageDescription</key>
+	<string>We need to send automation events to this application.</string>
+	<key>NSCalendarsUsageDescription</key>
+	<string>We need to access your calendar so that you can schedule calls.</string>
+	<key>NSContactsUsageDescription</key>
+	<string>We need to access your contacts so that you can schedule calls.</string>
+	<key>NSCameraUsageDescription</key>
+	<string>We need to access your camera so that call participants can see you.</string>
+	<key>NSDesktopFolderUsageDescription</key>
+	<string>We need to access this folder so that you can download/upload files.</string>
+	<key>NSDocumentsFolderUsageDescription</key>
+	<string>We need to access this folder so that you can download/upload files.</string>
+	<key>NSDownloadsFolderUsageDescription</key>
+	<string>We need to access this folder so that you can download/upload files.</string>
+	<key>NSHighResolutionCapable</key>
+	<true/>
+	<key>NSHumanReadableCopyright</key>
+	<string>@MAIN_PROJECT_COPYRIGHT@</string>
+	<key>NSMainNibFile</key>
+	<string>MainMenu</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>We need to access your microphone so that call participants can hear you.</string>
+	<key>NSPrincipalClass</key>
+	<string>NSApplication</string>
+	<key>NSSupportsAutomaticGraphicsSwitching</key>
+	<true/>
+	<key>SUAutomaticallyUpdate</key>
+	<true/>
+	<key>SUEnableAutomaticChecks</key>
+	<true/>
+	<key>SUPublicEDKey</key>
+	<string>VO+Nf5/NKZPhDzNlfARPUGnsHCSsk4DKj3hVzqsVpwk=</string>
+	<key>SUShowReleaseNotes</key>
+	<false/>
+	<key>SUEnableDownloaderService</key>
+	<false/>
+</dict>
+</plist>

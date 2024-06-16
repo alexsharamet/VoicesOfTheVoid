@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?include "cpack_variables.wxi"?>
+<?include "msi_defines.wxi"?>
+
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi" RequiredVersion="3.6.3303.0">
+
+    <Product Id="$(var.CPACK_WIX_PRODUCT_GUID)"
+        Name="$(var.CPACK_PACKAGE_NAME)"
+        Language="1033"
+        Version="$(var.CPACK_PACKAGE_VERSION)"
+        Manufacturer="$(var.CPACK_PACKAGE_VENDOR)"
+        UpgradeCode="$(var.CPACK_WIX_UPGRADE_GUID)">
+
+        <Package InstallerVersion="301" Compressed="yes" InstallPrivileges="limited" InstallScope="perUser"/>
+
+        <Media Id="1" Cabinet="media1.cab" EmbedCab="yes"/>
+
+        <MajorUpgrade Schedule="afterInstallInitialize"
+            AllowSameVersionUpgrades="yes"
+            DowngradeErrorMessage="Более поздняя версия [ProductName] уже установлена в системе. Программа установки будет завершена."/>
+
+        <WixVariable Id="WixUILicenseRtf" Value="$(var.CPACK_WIX_LICENSE_RTF)"/>
+        <Property Id="WIXUI_INSTALLDIR" Value="INSTALL_ROOT"/>
+
+        <?ifdef CPACK_WIX_PRODUCT_ICON?>
+        <Property Id="ARPPRODUCTICON">ProductIcon.ico</Property>
+        <Icon Id="ProductIcon.ico" SourceFile="$(var.CPACK_WIX_PRODUCT_ICON)"/>
+        <?endif?>
+
+        <?ifdef CPACK_WIX_UI_BANNER?>
+        <WixVariable Id="WixUIBannerBmp" Value="$(var.CPACK_WIX_UI_BANNER)"/>
+        <?endif?>
+
+        <?ifdef CPACK_WIX_UI_DIALOG?>
+        <WixVariable Id="WixUIDialogBmp" Value="$(var.CPACK_WIX_UI_DIALOG)"/>
+        <?endif?>
+
+        <DirectoryRef Id="CM_DP_QCALLS.bin">
+            <Component Id="ProgramRegistry">
+
+                <?ifdef URL_SCHEME1?>
+                <RegistryKey Root="HKCU" Key="SOFTWARE\Classes\$(var.URL_SCHEME1)" Id="Key1" ForceCreateOnInstall="yes">
+                    <RegistryValue Type="string" Name="URL Protocol" Value=""/>
+                    <RegistryValue Type="string" Value="URL:$(var.MAIN_PROJECT_NAME)"/>
+                    <RegistryKey Key="DefaultIcon">
+                        <RegistryValue Type="string" Value="&quot;[CM_DP_QCALLS.bin]$(var.MAIN_EXE_NAME).exe&quot;,1" />
+                    </RegistryKey>
+                    <RegistryKey Key="shell\open\command">
+                        <RegistryValue Type="string" Value="&quot;[CM_DP_QCALLS.bin]$(var.MAIN_EXE_NAME).exe&quot; &quot;%1&quot;" />
+                    </RegistryKey>
+                </RegistryKey>
+                <?endif?>
+
+                <?ifdef URL_SCHEME2?>
+                <RegistryKey Root="HKCU" Key="SOFTWARE\Classes\$(var.URL_SCHEME2)" Id="Key2" ForceCreateOnInstall="yes">
+                    <RegistryValue Type="string" Name="URL Protocol" Value=""/>
+                    <RegistryValue Type="string" Value="URL:$(var.MAIN_PROJECT_NAME)"/>
+                    <RegistryKey Key="DefaultIcon">
+                        <RegistryValue Type="string" Value="&quot;[CM_DP_QCALLS.bin]$(var.MAIN_EXE_NAME).exe&quot;,1" />
+                    </RegistryKey>
+                    <RegistryKey Key="shell\open\command">
+                        <RegistryValue Type="string" Value="&quot;[CM_DP_QCALLS.bin]$(var.MAIN_EXE_NAME).exe&quot; &quot;%1&quot;" />
+                    </RegistryKey>
+                </RegistryKey>
+                <?endif?>
+
+                <?ifdef URL_SCHEME3?>
+                <RegistryKey Root="HKCU" Key="SOFTWARE\Classes\$(var.URL_SCHEME3)" Id="Key3" ForceCreateOnInstall="yes">
+                    <RegistryValue Type="string" Name="URL Protocol" Value=""/>
+                    <RegistryValue Type="string" Value="URL:$(var.MAIN_PROJECT_NAME)"/>
+                    <RegistryKey Key="DefaultIcon">
+                        <RegistryValue Type="string" Value="&quot;[CM_DP_QCALLS.bin]$(var.MAIN_EXE_NAME).exe&quot;,1" />
+                    </RegistryKey>
+                    <RegistryKey Key="shell\open\command">
+                        <RegistryValue Type="string" Value="&quot;[CM_DP_QCALLS.bin]$(var.MAIN_EXE_NAME).exe&quot; &quot;%1&quot;" />
+                    </RegistryKey>
+                </RegistryKey>
+                <?endif?>
+
+            </Component>
+        </DirectoryRef>
+
+        <Feature Id="ClientMain" Title="Client" Level="1" >
+            <ComponentRef Id="ProgramRegistry" />
+        </Feature>
+
+        <FeatureRef Id="ProductFeature"/>
+
+        <UI>
+            <UIRef Id="$(var.CPACK_WIX_UI_REF)" />
+            <Publish Dialog="ExitDialog" 
+                Control="Finish" 
+                Event="DoAction" 
+                Value="LaunchApplication">NOT Installed
+            </Publish>
+        </UI>
+
+        <!-- Include the custom action -->
+        <Property Id="WixShellExecTarget" Value="[CM_DP_QCALLS.bin]\$(var.MAIN_EXE_NAME).exe"/>
+        <CustomAction Id="LaunchApplication" 
+            BinaryKey="WixCA" 
+            DllEntry="WixShellExec"
+            Impersonate="yes"/>
+
+        <CustomAction Id="RemoveRootFolder" Directory="AppDataFolder"
+            ExeCommand="cmd /C @rd /s /q &quot;[INSTALL_ROOT]&quot;"
+            Execute="deferred" Return="ignore" HideTarget="no" Impersonate="no" />
+
+        <InstallExecuteSequence>
+            <Custom Action="LaunchApplication" After="InstallFinalize">NOT Installed AND (UILevel=2 OR UILevel=3)</Custom>
+            <Custom Action="RemoveRootFolder" After="RemoveFolders">(REMOVE="ALL") AND NOT UPGRADINGPRODUCTCODE</Custom>
+        </InstallExecuteSequence>
+
+        <?include "properties.wxi"?>
+        <?include "product_fragment.wxi"?>
+    </Product>
+</Wix>

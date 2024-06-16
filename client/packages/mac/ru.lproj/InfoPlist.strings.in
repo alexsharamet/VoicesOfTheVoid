@@ -1,0 +1,10 @@
+/* Russian localization */
+"CFBundleDisplayName" = "@MAIN_PROJECT_NAME_RU@";
+"CFBundleName" = "@MAIN_PROJECT_NAME_RU@";
+"NSAppleEventsUsageDescription" = "Доступ необходим для отправки событий в приложение";
+"NSCameraUsageDescription" = "Разрешите доступ, чтобы собеседники могли видеть вас в звонке";
+"NSDesktopFolderUsageDescription" = "Доступ к папке необходим для того, чтобы скачивать или отправлять файлы";
+"NSDocumentsFolderUsageDescription" = "Доступ к папке необходим для того, чтобы скачивать или отправлять файлы";
+"NSDownloadsFolderUsageDescription" = "Доступ к папке необходим для того, чтобы скачивать или отправлять файлы";
+"NSHumanReadableCopyright" = "@MAIN_PROJECT_COPYRIGHT_RU@";
+"NSMicrophoneUsageDescription" = "Разрешите доступ, чтобы собеседники могли слышать вас в звонке";

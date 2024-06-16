@@ -1,0 +1,4 @@
+/* English localization */
+"CFBundleDisplayName" = "@MAIN_PROJECT_NAME@";
+"CFBundleName" = "@MAIN_PROJECT_NAME@";
+"NSHumanReadableCopyright" = "@MAIN_PROJECT_COPYRIGHT@";

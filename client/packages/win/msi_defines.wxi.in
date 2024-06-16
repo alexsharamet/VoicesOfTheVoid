@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Include>
+    <?define MAIN_PROJECT_NAME=@MAIN_PROJECT_NAME@ ?>
+    <?define MAIN_EXE_NAME=@MAIN_EXE_NAME@ ?>
+    <?define URL_SCHEME1=@PROJECT_URL_SCHEME1@ ?>
+    <?define URL_SCHEME2=@PROJECT_URL_SCHEME2@ ?>
+    <?define URL_SCHEME3=@PROJECT_URL_SCHEME3@ ?>
+</Include>
