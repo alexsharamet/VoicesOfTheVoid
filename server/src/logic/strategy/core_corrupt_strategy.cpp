@@ -71,6 +71,7 @@ namespace {
                 countDown = 0;
             }
         }
+        res += "...";
         return res;
     }
 

@@ -1,12 +1,13 @@
 import QtQuick 2.15
 import QtQuick.Window 2.15
 import QtQuick.Controls 2.15
+//import QtQuick.Controls.Styles 1.4
 //import QtQuick.Controls.Basic
 
 Page {
     id: root
     width: 1280
-    height: 860
+    height: 800
 
     Dialog {
             id: dialog
@@ -38,7 +39,7 @@ Page {
     Rectangle {
         anchors.fill : parent
         color: "transparent"
-        opacity: 0.5
+        //opacity: 0.8
 
         Image {
             anchors.fill : parent
@@ -57,53 +58,115 @@ Page {
             anchors.top: parent.top
             anchors.topMargin: 20
             text: mainPageViewModel.strategy
+            color: "white"
 		}
 
-		TextArea {
-			id: inputDialog
-			width: parent.width * 0.8
-			height: parent.height * 0.3
-			anchors.left: parent.left
-			anchors.leftMargin: parent.width * 0.1
-			anchors.top: parent.top
-			anchors.topMargin: parent.height * 0.1
-			text: mainPageViewModel.input
-			background: Rectangle {
-                            radius: 5
-                            color: "transparent"
-                            anchors.fill : parent
-                            border.color: "#333"
-                            border.width: 1
-                        }
+        ScrollView {
+            id: inputDialogView
+            ScrollBar.horizontal.policy: ScrollBar.AlwaysOff
+            width: parent.width * 0.8
+            height: parent.height * 0.3
+            anchors.left: parent.left
+            anchors.leftMargin: parent.width * 0.1
+            anchors.top: parent.top
+            anchors.topMargin: parent.height * 0.1
 
-			readOnly: true
-		}		
+            TextArea {
+                 id: inputDialog
 
-		TextArea {
-			id: outputDialog
-			width: parent.width * 0.8
-			height: parent.height * 0.2
-			anchors.left: inputDialog.left
-			anchors.top: inputDialog.bottom
-			anchors.topMargin: 50
+                 text: mainPageViewModel.input
+                 color: "orange"
+                 background: Rectangle {
+                             radius: 5
+                             color: "black"
+                             opacity: 0.4
+                             anchors.fill : parent
+                             border.color: "white"
+                             border.width: 2
+                         }
 
-            background: Rectangle {
-                radius: 5
-                color: "transparent"
-                anchors.fill : parent
-                border.color: "#333"
-                border.width: 1
+
+                 readOnly: true
             }
 		}
-		
+
+        ScrollView {
+            id: outputDialogView
+            ScrollBar.horizontal.policy: ScrollBar.AlwaysOff
+            width: parent.width * 0.8
+            height: parent.height * 0.2
+            anchors.left: inputDialogView.left
+            anchors.top: inputDialogView.bottom
+            anchors.topMargin: 100
+
+            TextArea {
+                id: outputDialog
+
+                width: parent.width
+                color: "orange"
+                background: Rectangle {
+                    radius: 5
+                    color: "black"
+                    opacity: 0.4
+                    anchors.fill : parent
+                    border.color: "white"
+                    border.width: 2
+                }
+
+                Label {
+                   id: outputDialogLabelHelper
+                   anchors.left: parent.left
+                   anchors.top: parent.top
+
+                   anchors.leftMargin: 10
+                   anchors.topMargin: 10
+
+                   color: "orange"
+                   text: "Put message here"
+                   visible: true
+
+                   background: Rectangle {
+                       color: "transparent"
+                       anchors.fill : parent
+                       border.width: 0
+                   }
+                }
+
+                Button {
+                        id: outputDialogHelper
+                        anchors.fill: parent
+
+                        visible: true
+                        background: Rectangle {
+                            color: "transparent"
+                            anchors.fill : parent
+                            border.width: 0
+                        }
+                        onClicked: {
+                            outputDialogLabelHelper.visible = false
+                            outputDialogHelper.visible = false
+                            outputDialog.forceActiveFocus()
+                        }
+                    }
+            }
+		}
+
 		Button {
 			id: sendButton
 			width: 200
 			height: 50
-			anchors.right: outputDialog.right
-			anchors.top: outputDialog.bottom
+			anchors.right: outputDialogView.right
+			anchors.top: outputDialogView.bottom
 			anchors.topMargin: 50
 			text: "Send"
+			//palette.buttonText: "red"
+			background: Rectangle {
+                            radius: 5
+                            color: "#F6B4F4"
+                            anchors.fill : parent
+                            border.color: "black"
+                            border.width: 1
+                        }
 			onClicked: {
 				mainPageViewModel.setMessage(outputDialog.text)
 			}
@@ -113,8 +176,8 @@ Page {
             id: tuneButton
             width: 200
             height: 50
-            anchors.left: outputDialog.left
-            anchors.top: outputDialog.bottom
+            anchors.left: outputDialogView.left
+            anchors.top: outputDialogView.bottom
             anchors.topMargin: 50
             text: "Tune"
             onClicked: {
@@ -127,7 +190,7 @@ Page {
             width: 200
             height: 50
             anchors.left: tuneButton.right
-            anchors.top: outputDialog.bottom
+            anchors.top: outputDialogView.bottom
             anchors.leftMargin: 50
             anchors.topMargin: 50
             text: "Boost"
@@ -138,6 +201,7 @@ Page {
 
          BusyIndicator {
             id: loader
+            palette.dark: "white"
             anchors.right: parent.right
             anchors.bottom: parent.bottom
             anchors.rightMargin: 10

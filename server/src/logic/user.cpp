@@ -55,6 +55,10 @@ namespace Logic {
     }
 
     void User::changeWeight() {
+        if (getStrategyType() == StrategyType::Prepared && m_corruptionWeight == 60) {
+            return;
+        }
+
         if (m_corruptionWeight > 0) {
             m_corruptionWeight -= 20;
         }
