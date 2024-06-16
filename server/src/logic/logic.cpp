@@ -4,6 +4,7 @@
 #include "logic/strategy/ai_strategy.h"
 #include "logic/strategy/core_corrupt_stategy.h"
 #include "logic/strategy/echo_strategy.h"
+#include "logic/strategy/prepared_strategy.h"
 #include "utils/random.h"
 
 #include <strategies.h>
@@ -14,6 +15,10 @@ namespace Logic {
     StrategyType selectStrategy() {
         if (Utils::isHappened(10)) {
             return StrategyType::AI;
+        }
+
+        if (Utils::isHappened(70)) {
+            return StrategyType::Prepared;
         }
 
         return StrategyType::Echo;
@@ -109,6 +114,9 @@ namespace Logic {
                 break;
             case StrategyType::Echo:
                 user->setGenStrategy(std::make_shared<EchoStrategy>());
+                break;
+            case StrategyType::Prepared:
+                user->setGenStrategy(std::make_shared<PreparedStrategy>());
                 break;
         }
 

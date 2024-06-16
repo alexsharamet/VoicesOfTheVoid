@@ -17,6 +17,7 @@ set(HEADERS
         inc/logic/strategy/ai_strategy.h
         inc/logic/strategy/echo_strategy.h
         inc/logic/strategy/core_corrupt_stategy.h
+        inc/logic/strategy/prepared_strategy.h
         inc/utils/config.h
         inc/utils/random.h)
 
@@ -28,6 +29,7 @@ set(SOURCE
         src/logic/strategy/ai_strategy.cpp
         src/logic/strategy/echo_strategy.cpp
         src/logic/strategy/core_corrupt_strategy.cpp
+        src/logic/strategy/prepared_strategy.cpp
         src/utils/config.cpp
         src/utils/random.cpp
         src/main.cpp)

@@ -1,6 +1,5 @@
 #include "utils/random.h"
 
-#include <cassert>
 #include <random>
 
 namespace Utils {
