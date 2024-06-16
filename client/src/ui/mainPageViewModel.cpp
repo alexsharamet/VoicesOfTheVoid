@@ -28,6 +28,17 @@ namespace UI {
             Q_EMIT inputChanged();
             Q_EMIT changeSpinnerState(false);
         });
+        connect(model, &UI::MainPageModel::gotError, this, &MainPageViewModel::showErrorDialog);
+    }
+
+    void MainPageViewModel::showErrorDialog(QString text) {
+        m_error = std::move(text);
+        Q_EMIT errorChanged();
+        Q_EMIT openDialog();
+    }
+
+    QString MainPageViewModel::error() const {
+        return m_error;
     }
 
     QString MainPageViewModel::input() const {

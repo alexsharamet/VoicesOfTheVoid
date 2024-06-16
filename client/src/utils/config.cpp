@@ -21,9 +21,16 @@ namespace Utils {
             m_id = id.toString();
         }
 
-        m_version = 0;
+        m_version = 2;
         m_host = m_settings->value("host").toString();
-        m_port = m_settings->value("port").toInt();
+        if (m_host.isEmpty()) {
+            m_host = QString("5.180.174.237");
+        }
+        auto port = m_settings->value("port");
+        if (port.isNull()) {
+            port = 8080;
+        }
+        m_port = port.toInt();
     }
 
     void Config::save() {

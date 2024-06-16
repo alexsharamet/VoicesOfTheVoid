@@ -9,9 +9,9 @@ namespace UI {
     MainPageModel::MainPageModel(Logic::Network *network)
         : m_network(network) {
 
-        auto unsupportableError = [](const QString &text) {
+        auto unsupportableError = [this](const QString &text) {
             qDebug() << "Unsupportable error: " << text;
-            //TODO
+            Q_EMIT gotError("Network error: check connection and reopen app \nErrorType: " + text);
         };
         connect(m_network.get(), &Logic::Network::gotNetworkError, this, [unsupportableError](const QString &error) {
             unsupportableError(QString("Network error: ") + error);
@@ -140,8 +140,7 @@ namespace UI {
                 break;
             }
             default: {
-                //TODO
-                qDebug() << "error in invalid state";
+                Q_EMIT gotError("Error occurred: reopen app");
             }
         }
     }

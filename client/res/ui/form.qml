@@ -8,10 +8,30 @@ Page {
     width: 1280
     height: 860
 
+    Dialog {
+            id: dialog
+            anchors.centerIn : Overlay.overlay
+            width: 400
+            height: 200
+            standardButtons: Dialog.Ok
+            contentItem: Item {
+                Label {
+                    width: 400
+                    height: 100
+                    anchors.top: parent.top
+                    anchors.left: parent.left
+                    text: mainPageViewModel.error
+                }
+            }
+        }
+
     Connections {
         target: mainPageViewModel
         function onChangeSpinnerState(running) {
             loader.running = running
+        }
+        function onOpenDialog() {
+           dialog.open()
         }
     }
 

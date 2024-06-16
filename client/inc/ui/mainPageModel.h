@@ -27,6 +27,7 @@ namespace UI {
         void gotMessage(QString);
         void gotTune(QString);
         void gotBoost();
+        void gotError(QString);
 
     public:
         explicit MainPageModel(Logic::Network *network);
