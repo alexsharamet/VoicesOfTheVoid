@@ -161,8 +161,8 @@ namespace Logic {
         if (m_weight > 0) {
             //6. Каждые либо 10-20 символов вставляются многоточие, при этом удаляется случайное количество символов от 5 до 20.
             res = missCharacters(res);
-            res = addLineBreak(res);
         }
+        res = addLineBreak(res);
         return res;
     }
 
