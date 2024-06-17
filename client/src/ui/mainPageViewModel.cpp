@@ -47,6 +47,10 @@ namespace UI {
         return m_strategy;
     }
 
+    bool MainPageViewModel::debug() const {
+        return m_model->getDebug();
+    }
+
     void MainPageViewModel::setMessage(const QString &text) {
         Q_EMIT changeSpinnerState(true);
         m_model->message(text);

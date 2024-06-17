@@ -40,7 +40,6 @@ Page {
     Rectangle {
         anchors.fill : parent
         color: "transparent"
-        //opacity: 0.8
 
         Image {
             anchors.fill : parent
@@ -60,6 +59,7 @@ Page {
             anchors.topMargin: 20
             text: mainPageViewModel.strategy
             color: "white"
+            visible: mainPageViewModel.debug
 		}
 
         ScrollView {

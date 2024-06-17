@@ -38,6 +38,8 @@ namespace UI {
         void tune();
         void boost();
 
+        bool getDebug() const;
+
     private:
         [[nodiscard]] bool validateState(bool existId = true);
         void registerUser();

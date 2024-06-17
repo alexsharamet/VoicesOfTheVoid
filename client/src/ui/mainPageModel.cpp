@@ -110,6 +110,10 @@ namespace UI {
         m_network->boost(m_id);
     }
 
+    bool MainPageModel::getDebug() const {
+       return Utils::Config::instance().getDebug();
+    }
+
     void MainPageModel::onUserIsNotExist() {
         auto action = m_currentAction;
         m_currentAction = Action::None;

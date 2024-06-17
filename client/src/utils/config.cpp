@@ -21,7 +21,6 @@ namespace Utils {
             m_id = id.toString();
         }
 
-        m_version = 2;
         m_host = m_settings->value("host").toString();
         if (m_host.isEmpty()) {
             m_host = QString("5.180.174.237");
@@ -31,6 +30,7 @@ namespace Utils {
             port = 8080;
         }
         m_port = port.toInt();
+        m_debug = m_settings->value("debug").toBool();
     }
 
     void Config::save() {
@@ -70,6 +70,10 @@ namespace Utils {
 
     void Config::setPort(int port) {
         m_port = port;
+    }
+
+    bool Config::getDebug() const {
+        return m_debug;
     }
 
 }// namespace Utils

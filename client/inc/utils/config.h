@@ -22,6 +22,8 @@ namespace Utils {
         int getPort() const;
         void setPort(int port);
 
+        bool getDebug() const;
+
     private:
         Config() = default;
 
@@ -31,5 +33,6 @@ namespace Utils {
         QString m_id;
         QString m_host;
         int m_port;
+        bool m_debug;
     };
 }// namespace Utils
