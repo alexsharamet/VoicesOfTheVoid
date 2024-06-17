@@ -123,7 +123,7 @@ Page {
                    anchors.topMargin: 10
 
                    color: "orange"
-                   text: "Put message here"
+                   text: "Enter your message here:"
                    visible: true
 
                    background: Rectangle {
@@ -160,7 +160,7 @@ Page {
 			anchors.top: outputDialogView.bottom
 			anchors.topMargin: 50
 			text: "Send"
-			//palette.buttonText: "red"
+			palette.buttonText: "black"
 			background: Rectangle {
                             radius: 5
                             color: "#F6B4F4"
@@ -169,7 +169,12 @@ Page {
                             border.width: 1
                         }
 			onClicked: {
+			    boostButton.enabled = true
+                boostButtonBack.color = "white"
+                tuneButton.enabled = true
+                tuneButtonBack.color = "white"
 				mainPageViewModel.setMessage(outputDialog.text)
+			    outputDialog.text = ""
 			}
 		}
 
@@ -181,7 +186,24 @@ Page {
             anchors.top: outputDialogView.bottom
             anchors.topMargin: 50
             text: "Tune"
+            palette.buttonText: "black"
+            background: Rectangle {
+                id: tuneButtonBack
+                radius: 5
+                color: "white"
+                anchors.fill : parent
+                border.color: "black"
+                border.width: 1
+            }
             onClicked: {
+                boostButton.enabled = false
+                boostButtonBack.color = "grey"
+                tuneButton.enabled = false
+                tuneButtonBack.color = "grey"
+                outputDialog.text = ""
+                outputDialogLabelHelper.visible = true
+                outputDialogHelper.visible = true
+                sendButton.forceActiveFocus()
                 mainPageViewModel.tuneButtonCicked()
             }
         }
@@ -195,19 +217,31 @@ Page {
             anchors.leftMargin: 50
             anchors.topMargin: 50
             text: "Boost"
+            palette.buttonText: "black"
+            background: Rectangle {
+                id: boostButtonBack
+                radius: 5
+                color: "white"
+                anchors.fill : parent
+                border.color: "black"
+                border.width: 1
+            }
             onClicked: {
+                boostButton.enabled = false
+                boostButtonBack.color = "grey"
+                tuneButton.enabled = false
+                tuneButtonBack.color = "grey"
                 mainPageViewModel.boostButtonClicked()
             }
          }
 
-         BusyIndicator {
+        BusyIndicator {
             id: loader
             palette.dark: "white"
-            anchors.right: parent.right
-            anchors.bottom: parent.bottom
-            anchors.rightMargin: 10
-            anchors.bottomMargin: 10
+            width: 70
+            height: 70
+            anchors.centerIn: parent
             running: false
-         }
+        }
 	}
 }
