@@ -79,6 +79,24 @@ namespace Logic {
         return ERROR_CODE::OK;
     }
 
+    ERROR_CODE CoreLogic::isFinished(const std::string &id, bool &finished) {
+        std::shared_ptr<User> user = getUser(id);
+        if (!user) {
+            return ERROR_CODE::USER_IS_NOT_EXIST;
+        }
+
+        std::unique_lock lock{user->getLockRef(), std::defer_lock};
+        if (!lock.try_lock()) {
+            return ERROR_CODE::USER_IS_BUSY;
+        }
+
+        if (user->getStrategyType() == StrategyType::AI && user->getWeight() == 0) {
+            finished = true;
+        }
+
+        return ERROR_CODE::OK;
+    }
+
     ERROR_CODE CoreLogic::send(const std::string &id, const std::string &instruction, std::string &response) {
         std::shared_ptr<User> user = getUser(id);
         if (!user) {
@@ -96,6 +114,7 @@ namespace Logic {
     }
 
     ERROR_CODE CoreLogic::tune(const std::string &id, StrategyType &type) {
+        std::cout << "tune" << std::endl;
         std::shared_ptr<User> user = getUser(id);
         if (!user) {
             return ERROR_CODE::USER_IS_NOT_EXIST;
@@ -126,6 +145,7 @@ namespace Logic {
     }
 
     ERROR_CODE CoreLogic::boost(const std::string &id) {
+        std::cout << "boost" << std::endl;
         std::shared_ptr<User> user = getUser(id);
         if (!user) {
             return ERROR_CODE::USER_IS_NOT_EXIST;

@@ -28,6 +28,7 @@ namespace UI {
         void gotTune(QString);
         void gotBoost();
         void gotError(QString);
+        void gotFinished();
 
     public:
         explicit MainPageModel(Logic::Network *network);
@@ -45,7 +46,7 @@ namespace UI {
     private:
         void onAuth(QString name, StrategyType type);
         void onRegister(QString name, StrategyType type);
-        void onSend(QString answer);
+        void onSend(QString answer, bool finished);
         void onTune(StrategyType type);
         void onBoost();
 

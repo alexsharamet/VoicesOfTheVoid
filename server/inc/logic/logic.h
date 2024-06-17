@@ -17,11 +17,12 @@ namespace Logic {
     class CoreLogic {
     public:
         CoreLogic();
-        ERROR_CODE authUser(const std::string &id, StrategyType& type);
+        ERROR_CODE authUser(const std::string &id, StrategyType &type);
         ERROR_CODE registerUser(const std::string &id, const std::string &name);
         ERROR_CODE send(const std::string &id, const std::string &instruction, std::string &response);
-        ERROR_CODE tune(const std::string &id, StrategyType& type);
+        ERROR_CODE tune(const std::string &id, StrategyType &type);
         ERROR_CODE boost(const std::string &id);
+        ERROR_CODE isFinished(const std::string &id, bool &finished);
 
         void save();
 

@@ -14,7 +14,8 @@ namespace UI {
             Q_EMIT gotError("Network error: check connection and reopen app \nErrorType: " + text);
         };
         connect(m_network.get(), &Logic::Network::gotNetworkError, this, [unsupportableError](const QString &error) {
-            unsupportableError(QString("Network error: ") + error);
+            qDebug() << QString("Network error: ") + error;
+            unsupportableError("Network error");
         });
         connect(m_network.get(), &Logic::Network::gotWrongResponseFormat, this, [unsupportableError] {
             qDebug() << "Wrong response format";
@@ -168,9 +169,12 @@ namespace UI {
         Q_EMIT gotTune(QString::fromStdString(toString(type)));
     }
 
-    void MainPageModel::onSend(QString answer) {
+    void MainPageModel::onSend(QString answer, bool finished) {
         m_currentAction = Action::None;
         Q_EMIT gotMessage(std::move(answer));
+        if (finished) {
+            Q_EMIT gotFinished();
+        }
     }
 
     void MainPageModel::onTune(StrategyType type) {

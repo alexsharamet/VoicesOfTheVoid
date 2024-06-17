@@ -23,7 +23,7 @@ int main(int argc, char *argv[]) {
         }
 
         Utils::Config::instance().load(argv[1]);
-        Utils::Config::instance().setVersion(2);
+        Utils::Config::instance().setVersion(3);
 
         Logic::CoreLogic logic;
         Server::HttpServer server;
@@ -53,8 +53,13 @@ int main(int argc, char *argv[]) {
         });
         server.setSendHandler([&logic](ERROR_CODE &err, const std::string &id, const std::string &instruction) {
             std::string response;
+            bool finished = false;
             err = logic.send(id, instruction, response);
-            return response;
+            err = logic.isFinished(id, finished);
+            nlh::json res;
+            res["message"] = response;
+            res["finished"] = finished;
+            return res;
         });
         server.setTuneHandler([&logic](ERROR_CODE &err, const std::string &id) {
             nlh::json res;

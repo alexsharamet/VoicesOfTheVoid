@@ -23,6 +23,7 @@ namespace Logic {
         [[nodiscard]] StrategyType getStrategyType() const;
 
         std::string ask(const std::string &text);
+        [[nodiscard]] int getWeight() const;
         void changeWeight();
         void clearWeight();
 

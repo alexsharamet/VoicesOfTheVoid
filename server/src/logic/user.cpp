@@ -54,6 +54,10 @@ namespace Logic {
         return response;
     }
 
+    int User::getWeight() const {
+        return m_corruptionWeight;
+    }
+
     void User::changeWeight() {
         if (getStrategyType() == StrategyType::Prepared && m_corruptionWeight == 60) {
             return;
@@ -67,6 +71,7 @@ namespace Logic {
 
     void User::clearWeight() {
         m_corruptionWeight = 100;
+        m_corruptionStrategy->changeWeight(m_corruptionWeight);
     }
 
     nlh::json User::toJson() const {

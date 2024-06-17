@@ -4,6 +4,7 @@
 
 #include <cassert>
 #include <cctype>
+#include <iostream>
 #include <string>
 #include <unordered_set>
 #include <utility>
@@ -75,6 +76,24 @@ namespace {
         return res;
     }
 
+    std::string addLineBreak(const std::string &input) {
+        std::string res;
+        std::string row;
+        int i = 0;
+        while (i < input.size()) {
+            char c = input[i];
+            row += c;
+            ++i;
+            if (row.size() > 120 && isSpecialSymbol(c)) {
+                res += row + "\n";
+                row.clear();
+            }
+        }
+
+        res += row;
+        return res;
+    }
+
     std::string encode(std::string text) {
         //1. Все числа преобразуются в слова.
         text = replaceText(
@@ -142,11 +161,13 @@ namespace Logic {
         if (m_weight > 0) {
             //6. Каждые либо 10-20 символов вставляются многоточие, при этом удаляется случайное количество символов от 5 до 20.
             res = missCharacters(res);
+            res = addLineBreak(res);
         }
         return res;
     }
 
     void CoreCorruptStrategy::changeWeight(int weight) {
         m_weight = weight;
+        std::cout << "Corrupt weight: " << m_weight << std::endl;
     }
 }// namespace Logic

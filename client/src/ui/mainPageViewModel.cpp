@@ -29,16 +29,14 @@ namespace UI {
             Q_EMIT changeSpinnerState(false);
         });
         connect(model, &UI::MainPageModel::gotError, this, &MainPageViewModel::showErrorDialog);
+        connect(model, &UI::MainPageModel::gotFinished, this, [this] {
+            Q_EMIT openDialog("Game finished");
+            tuneButtonCicked();
+        });
     }
 
     void MainPageViewModel::showErrorDialog(QString text) {
-        m_error = std::move(text);
-        Q_EMIT errorChanged();
-        Q_EMIT openDialog();
-    }
-
-    QString MainPageViewModel::error() const {
-        return m_error;
+        Q_EMIT openDialog(std::move(text));
     }
 
     QString MainPageViewModel::input() const {

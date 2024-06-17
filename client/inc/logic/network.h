@@ -23,7 +23,7 @@ namespace Logic {
 
         void gotRegister(QString id, StrategyType type);
         void gotAuth(QString id, StrategyType type);
-        void gotSend(QString answer);
+        void gotSend(QString answer, bool finished);
         void gotTune(StrategyType type);
         void gotBoost();
 

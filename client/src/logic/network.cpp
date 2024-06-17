@@ -122,9 +122,11 @@ namespace Logic {
 
         createPostRequest("/send", body, [this, name](const QString &body) {
             auto obj = QJsonDocument::fromJson(body.toUtf8()).object();
-            auto res = obj["response"].toString();
+            auto res = obj["response"].toObject();
+            QString message = res["message"].toString();
+            bool finished = res["finished"].toBool();
 
-            Q_EMIT gotSend(res);
+            Q_EMIT gotSend(message, finished);
         });
     }
 

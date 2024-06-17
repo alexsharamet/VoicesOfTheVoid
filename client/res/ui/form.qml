@@ -17,11 +17,11 @@ Page {
             standardButtons: Dialog.Ok
             contentItem: Item {
                 Label {
+                    id: dialogText
                     width: 400
                     height: 100
                     anchors.top: parent.top
                     anchors.left: parent.left
-                    text: mainPageViewModel.error
                 }
             }
         }
@@ -31,8 +31,9 @@ Page {
         function onChangeSpinnerState(running) {
             loader.running = running
         }
-        function onOpenDialog() {
-           dialog.open()
+        function onOpenDialog(text) {
+            dialogText.text = text
+            dialog.open()
         }
     }
 
