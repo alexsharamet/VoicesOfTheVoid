@@ -13,7 +13,7 @@
 
 namespace Logic {
     StrategyType selectStrategy() {
-        if (Utils::isHappened(10)) {
+        if (Utils::isHappened(40)) {
             return StrategyType::AI;
         }
 
