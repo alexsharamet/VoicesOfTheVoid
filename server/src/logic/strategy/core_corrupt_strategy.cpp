@@ -149,6 +149,7 @@ namespace {
 
 namespace Logic {
     std::string CoreCorruptStrategy::corrupt(const std::string &input) {
+        std::cout << "CoreCorruptStrategy: corrupt" << std::endl;
         auto data = split(input, " ");
         std::string res;
         for (auto text: data) {
@@ -158,10 +159,13 @@ namespace Logic {
             res += text + " ";
         }
 
+        std::cout << "CoreCorruptStrategy: missCharacters" << std::endl;
         if (m_weight > 0) {
             //6. Каждые либо 10-20 символов вставляются многоточие, при этом удаляется случайное количество символов от 5 до 20.
             res = missCharacters(res);
         }
+
+        std::cout << "CoreCorruptStrategy: addLineBreak" << std::endl;
         res = addLineBreak(res);
         return res;
     }

@@ -50,6 +50,7 @@ namespace Logic {
     }
 
     std::string AIStrategy::ask(const PromtHistory &history, const std::string &instruction) {
+        std::cout << "AIStrategy: ask" << std::endl;
         static nlh::json BASE_PROMT = createPromt();
         nlh::json json(BASE_PROMT);
 
@@ -61,7 +62,10 @@ namespace Logic {
         promtString += fmt::format("### Instruction:\n{}\n### Response:\n", instruction);
         json["prompt"] = promtString;
 
+        std::cout << "AIStrategy: dump" << std::endl;
         const auto promt = json.dump();
+
+        std::cout << "AIStrategy: send" << std::endl;
         auto response = m_ai->sendPromtSync(promt);
         return response;
     }

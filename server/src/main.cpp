@@ -13,6 +13,21 @@ ERROR_CODE validateVersion(int version) {
     return ERROR_CODE::WRONG_CLIENT_VERSION;
 }
 
+bool isPrintableAscii(char c) {
+    if (c == 0x09 || c == 0x0a || c == 0x0d || (0x20 <= c && c <= 0x7e)) return true;
+    return false;
+}
+
+std::string removeInvalidCharacters(std::string input) {
+    std::string res;
+    for (char c: input) {
+        if (isPrintableAscii(c)) {
+            res += c;
+        }
+    }
+    return res;
+}
+
 int main(int argc, char *argv[]) {
     std::srand(std::time(nullptr));
     try {
@@ -54,11 +69,16 @@ int main(int argc, char *argv[]) {
         server.setSendHandler([&logic](ERROR_CODE &err, const std::string &id, const std::string &instruction) {
             std::string response;
             bool finished = false;
+            std::cout << "main: send" << std::endl;
             err = logic.send(id, instruction, response);
+            std::cout << "main: isFinished" << std::endl;
             err = logic.isFinished(id, finished);
             nlh::json res;
-            res["message"] = response;
+            res["message"] = removeInvalidCharacters(response);
             res["finished"] = finished;
+            std::cout << "main return" << std::endl;
+            std::cout << "response: " << response << std::endl;
+
             return res;
         });
         server.setTuneHandler([&logic](ERROR_CODE &err, const std::string &id) {

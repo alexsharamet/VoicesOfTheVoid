@@ -98,6 +98,7 @@ namespace Logic {
     }
 
     ERROR_CODE CoreLogic::send(const std::string &id, const std::string &instruction, std::string &response) {
+        std::cout << "CoreLogic: send" << std::endl;
         std::shared_ptr<User> user = getUser(id);
         if (!user) {
             return ERROR_CODE::USER_IS_NOT_EXIST;
@@ -108,6 +109,7 @@ namespace Logic {
             return ERROR_CODE::USER_IS_BUSY;
         }
 
+        std::cout << "CoreLogic: user ask" << std::endl;
         response = user->ask(instruction);
 
         return ERROR_CODE::OK;
