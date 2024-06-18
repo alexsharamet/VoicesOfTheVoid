@@ -1,8 +1,10 @@
 #include "logic/user.h"
 
 #include "utils/config.h"
+#include "utils/random.h"
 
 #include <iostream>
+#include <thread>
 
 namespace Logic {
     User::User(std::string name)
@@ -50,6 +52,10 @@ namespace Logic {
     std::string User::ask(const std::string &instruction) {
         auto response = m_corruptionStrategy->corrupt(m_genStrategy->ask(m_history, instruction));
         addPromt({instruction, response});
+
+        if (m_genStrategy->getType() != StrategyType::AI) {
+            std::this_thread::sleep_for(std::chrono::seconds(1) * Utils::randomf(1.0f, 3.0f));
+        }
 
         return response;
     }
